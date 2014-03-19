@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:pv3dEffects="ws.tink.flex.pv3dEffects.*"
+	xmlns:mkt="componets.*" layout="vertical"
+	verticalAlign="middle" backgroundColor="gray"
+	backgroundImage="icons/background.jpg" backgroundSize="100%"
+	themeColor="#CECECE"
+	creationComplete="initApp();">
+
+	<!--Import ActionScript classes file-->
+	<mx:Script source="trayprint.as"/>
+
+	<!--Papervision3D effects for cube like rotation-->
+	<pv3dEffects:Cache id="cache" transparent="true"/>
+	<pv3dEffects:Cube id="cubeup" transparent="true" constrain="true" direction="up" duration="1000"/>
+	<pv3dEffects:Cube id="cubedown" transparent="true" constrain="true" direction="down" duration="1000"/>
+	<pv3dEffects:Cube id="cubeleft" transparent="true" constrain="true" direction="left" duration="1000"/>
+	<pv3dEffects:Cube id="cuberight" transparent="true" constrain="true" direction="right" duration="1000"/>
+	
+	<!--Flex Effects for panels-->	
+	<mx:WipeUp id="WipeUp" duration="500"/>
+	<mx:WipeDown id="WipeDown" duration="500"/>
+	      
+	<mx:ApplicationControlBar id="adminBar" dock="true" paddingLeft="25" horizontalAlign="right">
+		<mx:ToggleButtonBar id="buttonBar" 
+		dataProvider="{['Jobs', 'Colorline', 'Admin']}"
+		themeColor="#000000"
+		enabled="false" 
+		verticalAlign="top"
+		visible="true"/>	
+	</mx:ApplicationControlBar>
+	<mx:ViewStack 
+		id="applicationScreens"
+		width="100%" 
+		height="100%"
+		selectedIndex="{buttonBar.selectedIndex}">
+		<mx:HBox
+			id="jobScreen"
+			hideEffect="cache"
+			showEffect="cuberight">
+	    	<mkt:jobPanel id="jobPanelData" title="Job Page" width="100%" height="100%"/>
+	    </mx:HBox>
+		<mx:HBox
+			id="colorlineScreen"
+			effectEnd="if(buttonBar.selectedIndex == 1){colorPanel.JobColorname();}"
+			hideEffect="cache"
+			showEffect="cubeup">
+			<mkt:colornamePanel id="colorPanel" title="Colorline Page" width="100%" height="100%"/>
+		</mx:HBox>
+		<mx:HBox
+			id="adminScreen"
+			effectEnd="adminPanelPage.initApp();"
+			hideEffect="cache"
+			showEffect="cubeleft">
+			<mkt:adminPanel id="adminPanelPage" title="Admin Page" width="100%" height="100%"/>
+		</mx:HBox>
+	</mx:ViewStack>
+	
+	<mx:ApplicationControlBar id="addMoldBar" dock="false" visible="false" height="1" hideEffect="{WipeDown}" showEffect="{WipeUp}">
+	<mx:HBox width="100%" alpha="1">
+		<mx:Form>
+			<mx:FormItem label="Mold Name:" fontWeight="bold" fontSharpness="20" required="true" color="black">
+				<mx:TextInput
+					id="moldnameCol"
+					color="black"/>
+			</mx:FormItem>
+			<mx:FormItem label="Width" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="moldwidthCol"
+	        		color="black"
+	        		stepSize="0.125" 
+	        		maximum="1000.875"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Height:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper 
+	        		id="moldheightCol"
+	        		color="black"
+	        		stepSize="0.125"
+	        		maximum="1000.875"/>
+	        </mx:FormItem>
+	        <mx:FormItem label="Created By:" visible="false" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper 
+	        		id="createdbyCol"
+	        		value="{myUserRole.trayuserid}"
+	        		color="black"/>
+	        </mx:FormItem>
+	     </mx:Form>   
+	    <mx:Form>
+	        <mx:FormItem label="Across:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="moldacrossCol"
+	        		color="black"
+	        		stepSize="1" 
+	        		maximum="100"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Down:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="molddownCol"
+	        		color="black"
+	        		stepSize="1" 
+	        		maximum="100"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Number Of Swatches:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="numberofholesCol"
+	        		color="black"
+	        		stepSize="1"
+	        		maximum="250"/>
+	        </mx:FormItem>
+	    </mx:Form>
+	    <mx:Form>
+	      	<mx:FormItem label="Rib width:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="gwidthCol"
+	        		color="black"
+	        		stepSize="0.125" 
+	        		minimum="0.125"
+	        		maximum="10"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Swatch depth:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="gdepthCol"
+	        		color="black"
+	        		stepSize="0.125" 
+	        		minimum="0.125"
+	        		maximum="10"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Swatch Width:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="swatchwidthCol"
+	        		color="black"
+	        		stepSize="0.125" 
+	        		minimum="0.125"
+	        		maximum="20"/>	
+	        </mx:FormItem>
+	        <mx:FormItem label="Swatch Height:" fontWeight="bold" required="true" color="black">
+	        	<mx:NumericStepper
+	        		id="swatchheightCol"
+	        		color="black"
+	        		stepSize="0.125" 
+	        		minimum="0.125"
+	        		maximum="20"/>	
+	        </mx:FormItem>
+	    </mx:Form>
+	    <mx:Form>
+	    	<mx:Button label="Save Changes" width="104" click="insertItem();addMoldBar.height = 1;addMoldBar.visible = false;"/>
+	    	<mx:Button label="Cancel" width="104" click="addMoldBar.height = 1;addMoldBar.visible = false;"/>
+	    </mx:Form>
+		</mx:HBox>
+	</mx:ApplicationControlBar>
+</mx:Application>

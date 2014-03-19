@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 	
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:mkt="componets.*"
+	layout="absolute" creationComplete="initApp()"
+	showCloseButton="true" close="PopUpManager.removePopUp(this);" 
+	width="{parentApplication.width * .95}" height="{parentApplication.height * .95}" backgroundColor="#7D7D7D">
+    <mx:Script source="activateScript.as" />
+    <mx:WipeUp id="WipeUp" duration="500"/>
+	<mx:WipeDown id="WipeDown" duration="500"/>
+	<mx:Canvas id="view" width="99%" height="99%" hideEffect="WipeUp" showEffect="WipeDown">
+	<mx:DataGrid id="dataGrid"
+		editable="false"
+		dataProvider="{dataArr}"
+		rowCount="8"
+		resizableColumns="true" 
+		headerRelease="setOrder(event);"
+		right="10" left="10" top="10" bottom="71">
+			<mx:columns>
+				<!--<mx:DataGridColumn headerText="trayjobid" dataField="trayjobid" />
+				<mx:DataGridColumn headerText="Company:" dataField="company" />-->
+				<mx:DataGridColumn headerText="trayjobid" dataField="trayjobid" visible="false" />
+				<mx:DataGridColumn headerText="Job Name:" dataField="jobname" />
+				<mx:DataGridColumn headerText="Style Name:" dataField="stylename" />
+				<mx:DataGridColumn headerText="trayid" dataField="trayid" visible="false" />
+				<mx:DataGridColumn headerText="Mold Name:" dataField="moldname"/>
+				
+				<mx:DataGridColumn headerText="Status:" dataField="status">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Image horizontalAlign="center" width="20" height="18" source="icons/statusicon{data.status}.png"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Qty:" dataField="qty" />
+				<mx:DataGridColumn headerText="Last Updated By:" dataField="userlastupdatedby" />
+				<mx:DataGridColumn headerText="Created By:" dataField="usercreatedby" />
+			</mx:columns>
+	</mx:DataGrid>
+	<mx:Button id="btnActivate" label="Activate" toolTip="Activate Job" bottom="10" x="10" click="updateJob();"/>
+	<mx:Button id="btnDupActivate" icon="@Embed('icons/DupRecord.png')" toolTip="Duplicate Job" bottom="10" x="90" click="dupItem();"/>
+	<mx:Label text="Search by Job Name" right="300" bottom="11"/>
+	<mx:TextInput id="filterTxt" width="238" toolTip="Search by jobname" enter="filterResults()" right="58" bottom="11" text="Type.Job.Name"/>
+	<mx:Button click="filterResults()" id="filterButton" icon="@Embed('icons/SearchRecord.png')" toolTip="Search by jobname" right="10" bottom="10"/>
+	</mx:Canvas>
+</mx:TitleWindow>

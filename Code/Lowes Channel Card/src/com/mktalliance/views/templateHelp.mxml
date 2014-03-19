@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="How to fill out job information"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="{FlexGlobals.topLevelApplication.width * .8}" 
+			   height="{FlexGlobals.topLevelApplication.height * .8}"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   creationCompleteEffect="{fadeIn}"
+			   creationComplete="init()"
+			   close="handleCloseEvent()"  >
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals; 
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			
+			public var alertTimer:Timer = new Timer(10000, 1);
+			
+			private function init():void {
+				//alertTimer.start();
+				alertTimer.addEventListener(TimerEvent.TIMER_COMPLETE, alertTimerComplete);
+			}
+			
+			private function alertTimerComplete(event:TimerEvent):void{
+				PopUpManager.removePopUp(this);
+			}
+			
+			// Handle the close button and Cancel button.
+			private function handleCloseEvent():void {
+				alertTimer.stop();
+				PopUpManager.removePopUp(this);
+			}            
+		]]>
+	</fx:Script>
+	
+	<fx:Style source="MagPrint.css"/>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:Fade alphaFrom="0.0" alphaTo="1.0" id="fadeIn" duration="500"/>
+		<mx:DateFormatter id="myDate" formatString="MM / DD / YYYY"/>
+	</fx:Declarations>
+
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button label="CLOSE" color="#000000" click="handleCloseEvent()"/>
+	</s:controlBarContent>
+
+	<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx" >
+	<mx:Canvas width="{this.width}" height="{this.height}">
+			<mx:Text top="20" horizontalCenter="0" width="{this.width * .85}" height="{this.height * .6}" fontSize="16">
+				<mx:htmlText>
+					<![CDATA[<p><b>Template Selection. </b>If you hover the mouse over items a tooltip will appear to explain what each button does.</p>
+<p><b>TEMPLATE TYPE</b> - Choose the item type (e.g. Widespread)</p>
+<p><b>AVALIABLE AS SHOWER ONLY</b> - Adds text that notes the item is avaliable in shower only.</p>
+					
+			<p><b>NOTE: These are just instructions for the site. When finished click the CLOSE button.</b></p>
+					]]>
+				</mx:htmlText>
+			</mx:Text>
+		
+	</mx:Canvas>
+	
+	</s:Group>
+</s:TitleWindow>

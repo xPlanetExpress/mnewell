@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%">
+		<!--endpoint="http://my.mktalliance.com/flex2gateway/"
+		source="ext.lowes.apps.Service">
+		endpoint="http://localhost:8500/flex2gateway/"
+		source="MagPrintConcept-debug.Service">-->
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:RemoteObject id="cfService" showBusyCursor="true"
+			 destination="ColdFusion" 
+			 endpoint="http://localhost:8500/flex2gateway/"
+			 source="MagPrintConcept-debug.Service">
+			<mx:method name="saveXML" fault="cfServiceFaultHandler(event)" result="cfServiceResultHandler(event)">
+				<mx:arguments>
+					<xmlString>{webshopData}</xmlString>
+					<xmlJob>{'LC' + jobData._reorderNumber}</xmlJob>
+				</mx:arguments>
+			</mx:method>
+			<mx:method name="emailJob" fault="cfServiceFaultHandler(event)" result="emailResultHandler(event)">
+				<mx:arguments>
+					<vendorContact>{jobData._vendorContact}</vendorContact>
+					<vendorEmail>{jobData._vendorEmail}</vendorEmail>
+					<jobNumber>{'LC' + jobData._reorderNumber}</jobNumber>
+					<productName>{jobData._productNumber}</productName>
+					<requestedDate>{jobData._instoreDate}</requestedDate>
+					<numberofStores>{jobData._numberofStore}</numberofStores>
+					<numberforArchway>{jobData._numberforArchway}</numberforArchway>
+					<jobNotes>{jobData._jobNotes}</jobNotes>
+				</mx:arguments>
+			</mx:method>
+		</mx:RemoteObject>
+		<s:RemoteObject id="cfSave" showBusyCursor="true"
+			destination="ColdFusion"
+			endpoint="http://my.mktalliance.com/flex2gateway/"
+			source="ext.lowes.apps.databaseService">
+			<s:method name="saveData" fault="cfServiceFaultHandler(event)" result="cfSaveHandler(event)">
+				<s:arguments>
+					<jobData>{jobData}</jobData>
+					<templateData>{templateData}</templateData>
+					<logoData>{logoData}</logoData>
+					<iconData>{iconData}</iconData>
+					<holeData>{holeData}</holeData>
+				</s:arguments>
+			</s:method>
+			<s:method name="updateData" fault="cfServiceFaultHandler(event)" result="cfSaveHandler(event)">
+				<s:arguments>
+					<jobID>{editData._editJob.id}</jobID>
+					<jobData>{jobData}</jobData>
+					<templateData>{templateData}</templateData>
+					<logoData>{logoData}</logoData>
+					<iconData>{iconData}</iconData>
+					<holeData>{holeData}</holeData>
+				</s:arguments>
+			</s:method>
+		</s:RemoteObject>
+
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			public var editData:EditData;
+			[Bindable]			
+			public var jobData:JobData;
+			[Bindable]
+			public var templateData:TemplateData;
+			[Bindable]
+			public var logoData:LogoData;			
+			[Bindable]
+			public var holeData:HoleData;
+			[Bindable]
+			public var iconData:IconData;
+			[Bindable]
+			public var webshopData:XML=<jobs></jobs>;
+			
+			protected function webshopXML():void
+			{
+				var i:int;
+				
+				/* var images:XML = <images>
+					</images>
+				for (i=0;i<iconData._selectedIcons.list.length;i++){
+					var image:XML = <image>WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Images:{iconData._selectedIcons[i].webshop}</image>;
+					images=images.appendChild(image);
+				} */
+				
+				// Snippet XML Node
+				var snippets:XML = <snippets>
+					</snippets>
+					
+				//Logo XML Node	
+				var logo:XML = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{logoData._vendorLogo.webshop}</snippet>;
+				snippets=snippets.appendChild(logo);
+				var logo2:XML = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{logoData._vendorLogo.webshop}</snippet>;
+				snippets=snippets.appendChild(logo2);
+				
+				//Icon XML Node
+				/* if(iconData._selectedIcons.list.length == "undefined")
+				{
+					trace("Woot Woot!!");	
+				} */
+				
+				if(iconData._selectedIcons.list != null)
+				{
+					for (i=0;i<iconData._selectedIcons.list.length;i++){					
+						var image:XML = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{iconData._selectedIcons[i].webshop}</snippet>;
+						snippets=snippets.appendChild(image);
+						var image2:XML = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{iconData._selectedIcons[i].webshop}</snippet>;
+						snippets=snippets.appendChild(image2);
+					}
+				}
+				//Shower Only XML Node
+				var showerOnly:XML;
+				var showerOnly2:XML;
+				if(templateData._showerOnly)
+				{
+					showerOnly = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:Available Shower Only.inds</snippet>;
+					snippets=snippets.appendChild(showerOnly);
+					showerOnly2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:Available Shower Only.inds</snippet>;
+					snippets=snippets.appendChild(showerOnly2);
+				}
+				else
+				{
+					showerOnly = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:standard.inds</snippet>;
+					snippets=snippets.appendChild(showerOnly);
+					showerOnly2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:standard.inds</snippet>;
+					snippets=snippets.appendChild(showerOnly2);
+				}
+				
+				//Hardware Avaliable
+				var hardWare:XML;
+				var hardWare2:XML;
+				if(templateData._hardWare)
+				{
+					hardWare = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:HardwareAvailable.inds</snippet>;
+					snippets=snippets.appendChild(hardWare);
+					hardWare2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:HardwareAvailable.inds</snippet>;
+					snippets=snippets.appendChild(hardWare2);
+				}
+				else
+				{
+					hardWare = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:blank.inds</snippet>;
+					snippets=snippets.appendChild(hardWare);
+					hardWare2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:blank.inds</snippet>;
+					snippets=snippets.appendChild(hardWare2);
+				}
+				
+				//Hole Configuration XML Node
+				var holeConf:XML;
+				var holeConf2:XML;
+				if(holeData._holeConf == null)
+				{
+					holeConf = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:blank.inds</snippet>;
+					snippets=snippets.appendChild(holeConf);
+					holeConf2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:blank.inds</snippet>;
+					snippets=snippets.appendChild(holeConf2);
+				}
+				else
+				{
+					holeConf = <snippet page="1">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{holeData._holeConf.webshop}</snippet>;
+					snippets=snippets.appendChild(holeConf);
+					holeConf2 = <snippet page="2">WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:Images:Snippets:{holeData._holeConf.webshop}</snippet>;
+					snippets=snippets.appendChild(holeConf2);
+				}
+				
+				var newJob:XML=<job>
+					<JobName>{'LC' + jobData._reorderNumber}</JobName>
+				    <JobTemplate>Lowes Faucet Channel Cards_XML</JobTemplate>
+				    <JobGroup>Lowes Faucet Channel Cards</JobGroup>
+				    <inputfiles>
+				      <string>\\10.1.1.110\WebShop\InputPDF\{'LC' + jobData._reorderNumber}.pdf</string>
+				    </inputfiles>
+				    <indd>
+				      <string>\\10.1.1.110\WebShop\InputPDF\{'LC' + jobData._reorderNumber}.indd</string>
+				    </indd>
+					<template useremail={jobData._vendorEmail}>WebShop:Templates:Lowes Faucets:{templateData._templateType.webshopSize}:{templateData._templateType.webshopColor}</template>
+					<output jobname={'LC' + jobData._reorderNumber}>Webshop:InputPDf</output>
+					{snippets}
+					<texts>
+					  <text type="spec1">{jobData._productNumber}</text>
+					  <text type="spec2">{jobData._reorderNumber}</text>
+					  <text type="spec3">{jobData._reorderNumber2}</text>
+					  <text type="spec4"> </text>
+					  <text type="stylename1">{jobData._productName}</text>
+					</texts>
+				  </job>;
+				webshopData=webshopData.appendChild(newJob);
+				
+				saveDatabase();
+			}
+			
+			protected function cfServiceResultHandler(Event:ResultEvent):void{
+				
+				cfService.emailJob();
+			}
+			
+			protected function emailResultHandler(Event:ResultEvent):void{
+				homePage();				
+			}
+			
+			protected function cfServiceFaultHandler(Event:FaultEvent):void {
+				Alert.show(String(Event.fault.faultDetail),"Job Error");
+			}
+			
+			protected function cfSaveHandler(Event:ResultEvent):void{
+				//Alert.show(String(Event.result),"Job Success");
+				if(Event.result == "Not Successful Job."){
+					Alert.show("A job with this reorder number exists. You must go back to the main screen by hitting the HOME BUTTON at the top of the page. Then use the EDIT PROOF BUTTON to choose this proof and make changes.","Proof already exists.");
+				}
+				else{
+					cfService.saveXML();					
+				}
+			}
+			
+			protected function saveDatabase():void{
+				if (editData._editJob.reorderNumber !== undefined) {
+					cfSave.updateData();			
+				}
+				else{
+					cfSave.saveData();
+				}
+			}
+			
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			
+			public function homePage():void
+			{
+				var u:URLRequest = new URLRequest("http://my.mktalliance.com/ext/lowes/");
+				navigateToURL(u,"_self");
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Panel title="Create Proof" width="90%" height="90%" horizontalCenter="0">
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<mx:Canvas  width="100%">
+			<mx:Form horizontalCenter="0" fontSize="16">
+				<mx:FormItem>
+					<s:Button fontSize="20" label="Submit Proof" click="webshopXML()"/>
+				</mx:FormItem>
+			</mx:Form>			
+		</mx:Canvas>
+		<mx:Spacer height="5"/>
+		
+		<mx:Canvas width="100%" height="100%">
+			<mx:Text horizontalCenter="0" fontSize="16"
+					 text="The Submit Proof button will create a new or an edited proof for you to approve.&#13;You will receive an email to view and approve this proof. The email will come from http://insite.mktalliance.com" />
+		</mx:Canvas>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" dock="true" bottom="2">
+		<s:Button label="BACK" click="backPanel()"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" bottom="10" enabled="false"/>
+	</mx:ApplicationControlBar>
+	
+</s:Group>

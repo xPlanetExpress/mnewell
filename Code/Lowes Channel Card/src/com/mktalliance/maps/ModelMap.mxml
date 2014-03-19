@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventMap 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns="http://mate.asfusion.com/">
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.business.*;
+			import com.mktalliance.views.*;
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		
+		<Injectors target="{MainUI}">
+			<PropertyInjector targetKey="currentPanel" source="{NavigationManager}" sourceKey="currentPanel"/>
+		</Injectors>
+		
+		<Injectors target="{submitPanel}">
+			<PropertyInjector targetKey="jobData" source="{DataManager}" sourceKey="_jobData"/>
+			<PropertyInjector targetKey="templateData" source="{DataManager}" sourceKey="_templateData"/>
+			<PropertyInjector targetKey="logoData" source="{DataManager}" sourceKey="_logoData"/>
+			<PropertyInjector targetKey="holeData" source="{DataManager}" sourceKey="_holeData"/>
+			<PropertyInjector targetKey="iconData" source="{DataManager}" sourceKey="_iconData"/>
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{infoPanel}">
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{templatePanel}">
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{logoPanel}">
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{configPanel}">
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{iconPanel}">
+			<PropertyInjector targetKey="editData" source="{EditManager}" sourceKey="_editData"/>
+		</Injectors>
+		
+		<Injectors target="{NavigationManager}">
+			<PropertyInjector targetKey="templateData" source="{DataManager}" sourceKey="_templateData"/>
+		</Injectors>
+		
+		<!-- CatalogBrowse View __________________________________________________________________ 
+		
+		<Injectors target="{CatalogBrowse}">
+			<PropertyInjector targetKey="cartResults" source="{CatalogManager}" sourceKey="catalogResults" />
+		</Injectors>
+		
+		 CartBrowse View _____________________________________________________________________ 
+		
+		<Injectors target="{ShowCart}">
+			<PropertyInjector targetKey="currentCart" source="{CartManager}" sourceKey="cartResults" />
+		</Injectors>
+		
+		 MainUI View _________________________________________________________________________ -
+		
+		<Injectors target="{MainUI}">
+			<PropertyInjector targetKey="itmesInCart" source="{CartManager}" sourceKey="totalItems" />
+		</Injectors>
+		-->
+	</fx:Declarations>
+	
+</EventMap>
+

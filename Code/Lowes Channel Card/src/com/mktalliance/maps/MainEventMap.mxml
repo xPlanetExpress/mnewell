@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventMap 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns="http://mate.asfusion.com/"
+	xmlns:services="com.mktalliance.services.*"> 
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.business.*;
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.JobData;
+			
+			import mx.events.*;
+
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<Debugger level="{Debugger.ALL}"/>
+		
+		<!-- FlexEvent.PREINITIALIZE __________________________________________________________________ -->
+		
+		<EventHandlers type="{FlexEvent.PREINITIALIZE}">
+			<ObjectBuilder generator="{DataManager}" constructorArguments="{scope.dispatcher}" />
+			<ObjectBuilder generator="{EditManager}" constructorArguments="{scope.dispatcher}"/>
+			<ObjectBuilder generator="{NavigationManager}" constructorArguments="{scope.dispatcher}"/>
+		</EventHandlers>
+		
+		<!-- FlexEvent.APPLICATION_COMPLETE ___________________________________________________________ -->
+		
+		<EventHandlers type="{FlexEvent.APPLICATION_COMPLETE}">
+			<!-- Also an inital start function-->
+			<MethodInvoker generator="{NavigationManager}" method="uiEvent"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{NavigationEvent.REPEAT_JOB}">
+			<MethodInvoker generator="{NavigationManager}" method="repeatPanel" arguments="{[event]}"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{NavigationEvent.NEXT_PANEL}">
+			<MethodInvoker generator="{NavigationManager}" method="nextPanel" arguments="{[event]}" />
+		</EventHandlers>
+		
+		<EventHandlers type="{NavigationEvent.BACK_PANEL}">
+			<MethodInvoker generator="{NavigationManager}" method="backPanel" arguments="{[event]}" />
+		</EventHandlers>
+		
+		<!--Data Events to pass to DataManager_________________________________________________________-->
+		<EventHandlers type="{com.mktalliance.events.DataEvent.JOB_DATA}">
+			<MethodInvoker generator="{DataManager}" method="setJobData" arguments="{[event.jobData]}" />
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_JOB_DATA}">
+			<MethodInvoker generator="{DataManager}" method="getJobData"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.TEMPLATE_DATA}">
+			<MethodInvoker generator="{DataManager}" method="setTemplateData" arguments="{[event.templateData]}"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_TEMPLATE_DATA}">
+			<MethodInvoker generator="{DataManager}" method="getTemplateData"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.LOGO_DATA}">
+			<MethodInvoker generator="{DataManager}" method="setLogoData" arguments="{[event.logoData]}"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_LOGO_DATA}">
+			<MethodInvoker generator="{DataManager}" method="getLogoData"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.HOLE_DATA}">
+			<MethodInvoker generator="{DataManager}" method="setHoleData" arguments="{[event.holeData]}"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_HOLE_DATA}">
+			<MethodInvoker generator="{DataManager}" method="getHoleData"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.ICON_DATA}">
+			<MethodInvoker generator="{DataManager}" method="setIconData" arguments="{[event.iconData]}"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_ICON_DATA}">
+			<MethodInvoker generator="{DataManager}" method="getIconData"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.EditEvent.EDIT_JOB}">
+			<MethodInvoker generator="{EditManager}" method="setEditData" arguments="{[event.editData]}"/>
+		</EventHandlers>
+		
+		<!--Data Events to pass to DatabaseManager_________________________________________________________-->
+		<EventHandlers type="{com.mktalliance.events.DataEvent.SAVE_DATA}">
+			<RemoteObjectInvoker instance="{services.databaseService}" method="saveData" arguments="{[event.jobData, event.templateData, event.logoData, event.holeData, event.iconData]}" debug="true">
+				<resultHandlers>
+					<MethodInvoker generator="{DataManager}" method="databaseResult" arguments="{resultObject}"/>
+				</resultHandlers>
+			</RemoteObjectInvoker>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.GET_DATA}">
+			<MethodInvoker generator="{DatabaseManager}" method="getDatabase"/>
+		</EventHandlers>
+		
+		<EventHandlers type="{com.mktalliance.events.DataEvent.UPDATE_DATA}">
+			<MethodInvoker generator="{DatabaseManager}" method="updateDatabase"/>
+		</EventHandlers>
+		
+		<!-- ======================================================================================== -->
+		<!-- Services   Note: you can have an external file if you have more services -->
+		<!-- ======================================================================================== -->
+				
+		<services:Services id="services"/>
+		
+	</fx:Declarations>
+	
+</EventMap>
+

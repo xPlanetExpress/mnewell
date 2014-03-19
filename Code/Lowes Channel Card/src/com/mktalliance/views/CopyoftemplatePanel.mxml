@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayCollection id="Concept">
+			<fx:Object index="0" label="7.9 x 4.25" webshop="7.9x4.25"/>
+			<fx:Object index="1" label="11.75 x 4.25" webshop="11.75x4.25"/>
+			<fx:Object index="2" label="11.75 x 6" webshop="11.75x6"/>
+		</s:ArrayCollection>
+		
+		<s:ArrayCollection id="Type">
+			<fx:Object index="0" label="Centerset" 		webshopColor="Centerset_PMS360.eps" 				webshopSize="7.9x4.25"/>
+			<fx:Object index="1" label="Widespread" 	webshopColor="Widespread_PMS348.eps" 				webshopSize="11.75x4.25"/>
+			<fx:Object index="2" label="Roman Tub" 		webshopColor="RomanTub_40 Percent PMS 320.eps" 		webshopSize="11.75x4.25"/>
+			<fx:Object index="3" label="Tub / Shower" 	webshopColor="TubShower_PMS320.eps" 				webshopSize="11.75x4.25"/>
+			<fx:Object index="4" label="Pulldown" 		webshopColor="PullDown_PMS 2935.eps" 				webshopSize="11.75x6"/>
+			<fx:Object index="5" label="Pullout" 		webshopColor="PullOut_PMS 2736.eps" 				webshopSize="11.75x6"/>
+			<fx:Object index="6" label="Kitchen" 		webshopColor="Kitchen_PMS 261.eps" 					webshopSize="11.75x6"/>
+			<fx:Object index="7" label="Bar / Laundry" 	webshopColor="BarLaundry_40 Percent PMS 261.eps" 	webshopSize="7.9x4.25"/>
+		</s:ArrayCollection>
+		
+		<s:ArrayCollection id="Color">
+			<fx:Object index="0" label="Bay 1 Centerset" webshop="Centerset_PMS360.eps"/>
+			<fx:Object index="1" label="Bay 2 Widespread" webshop="Widespread_PMS348.eps"/>
+			<fx:Object index="2" label="Bay 3 Roman Tub" webshop="RomanTub_40 Percent PMS 320.eps"/>
+			<fx:Object index="3" label="Bay 3 Tub / Shower" webshop="TubShower_PMS320.eps"/>
+			<fx:Object index="4" label="Bay 4 Pulldown" webshop="PullDown_PMS 2935.eps"/>
+			<fx:Object index="5" label="Bay 5 Pullout" webshop="PullOut_PMS 2736.eps"/>
+			<fx:Object index="6" label="Bay 6 Kitchen" webshop="Kitchen_PMS 261.eps"/>
+			<fx:Object index="7" label="Bay 6 Bar / Laundry" webshop="BarLaundry_40 Percent PMS 261.eps"/>
+			<fx:Object index="8" label="Vessel" webshop="Vessel_50 Percent PMS 348.eps"/>
+		</s:ArrayCollection>		
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			protected function vResult():void
+			{
+				var templateSelected:int;
+				
+				templateSelected = templateType.selectedIndex;
+				
+			}
+			
+			protected function saveTemplateData():void
+			{
+				var templateData:TemplateData = new TemplateData();
+				/* templateData._templateSize = templateSize.selectedItem;;
+				templateData._templateColor = templateColor.selectedItem; */
+				templateData._templateType = templateType.selectedItem;
+				templateData._showerOnly = showerOnly.selected;
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.TEMPLATE_DATA);
+				saveDataEvent.templateData = templateData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+			}
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			
+			
+		]]>
+	</fx:Script>
+	<s:Panel title="Choose Template" width="90%" height="90%" horizontalCenter="0" toolTip="Roll over items for instructions." >
+		<s:layout>
+			<s:VerticalLayout/>
+		</s:layout>
+		<mx:Canvas width="100%" height="25%">
+			<mx:HBox horizontalCenter="0">
+				<mx:Form fontSize="16">
+					<mx:FormItem label="Template Type:">
+						<s:ComboBox id="templateType" requireSelection="true" dataProvider="{Type}" toolTip="Choose what type of item." />
+					</mx:FormItem>
+					<mx:FormItem label="Avaliable as shower only (11.75 x 4.25 ONLY):" toolTip="Adds the Avaliable as shower only tag to the 11.75 x 4.25 template.">
+						<s:CheckBox id="showerOnly" toolTip="Adds the Avaliable as shower only tag to the 11.75 x 4.25 template."/>
+					</mx:FormItem>
+				</mx:Form>
+				<!--<mx:Form fontSize="14">
+					<mx:FormItem label="Template Size:">
+						<s:ComboBox id="templateSize" requireSelection="true" dataProvider="{Concept}" toolTip="Click to choose card size."/>
+					</mx:FormItem>
+					<mx:FormItem label="Bar Color on Template:">
+						<mx:Text text="" width="143" />
+					</mx:FormItem>
+					<mx:FormItem label="Template Color">
+						<s:ComboBox id="templateColor" requireSelection="true" dataProvider="{Color}" toolTip="Click to choose the background color of the card.&#13;Note: the key below matches the colors."/>
+					</mx:FormItem>
+				</mx:Form>-->
+			</mx:HBox>
+		</mx:Canvas>
+		<mx:Spacer height="5"/>
+		<s:Group width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout/>
+			</s:layout>
+			<mx:Canvas width="100%" height="65%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+				<mx:Image horizontalCenter="0" width="60%" smoothBitmapContent="true" source="assets/backgrounds/colors.png" toolTip="This is the key for the Template Color dropdown."/>
+			</mx:Canvas>
+			
+			<mx:Canvas width="100%" height="10%" bottom="0">
+				<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="95%" dock="true" bottom="20">
+					<s:Button label="BACK" click="backPanel()"/>
+					<mx:Spacer width="100%"/>
+					<s:Button label="NEXT" click="saveTemplateData()"/>
+				</mx:ApplicationControlBar>			
+			</mx:Canvas>
+		</s:Group>
+	</s:Panel>
+</s:Group>

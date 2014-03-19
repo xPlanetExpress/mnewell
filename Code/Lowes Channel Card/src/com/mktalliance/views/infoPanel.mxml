@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="100%"
+		 creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<!--<mate:Listener type="{NavigationEvent.JOB_INFO}" 		receive="saveData()"/>-->
+		<mate:Listener type="{NavigationEvent.JOB_INFO}"			receive="init()"/>
+		
+		<!--<mx:StringValidator id="vproductName" 	source="{productName}" 		property="text" minLength="2" maxLength="50" tooShortError="Product Name is required." requiredFieldError="Product Name is required." />-->
+		<mx:StringValidator id="vproductNumber" source="{productNumber}" 	property="text" minLength="1" maxLength="50" tooShortError="Product Number is required." requiredFieldError="Product Number is required."/>
+		<mx:StringValidator id="vreorderNumber" source="{reorderNumber}" 	property="text" minLength="1" maxLength="50" tooShortError="Reorder Number is required." requiredFieldError="Reorder Number is required."/>
+		<mx:StringValidator id="vvendorContact" source="{vendorContact}" 	property="text" minLength="1" maxLength="50" tooShortError="Vendor Contact is required." requiredFieldError="Vendor Contact is required."/>
+		<mx:EmailValidator id="vvendorEmail" 	source="{vendorEmail}" 		property="text"/>
+		<mx:DateValidator id="vinstoreDate" 	source="{instoreDate}" 		property="text"/>
+		<mx:NumberValidator id="vnumberofstores" source="{numberofStore}"	property="value" minValue="2" maxValue="20000"/>
+		<mx:NumberValidator id="vnumberforarchway" source="{numberforArchway}" property="value" minValue="2" maxValue="20000"/>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.business.DataManager;
+			import com.mktalliance.events.*;
+			import com.mktalliance.views.infoHelp;
+			import com.mktalliance.vos.EditData;
+			import com.mktalliance.vos.JobData;
+			import com.mktalliance.vos.TemplateData;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			
+			import spark.components.TitleWindow;
+			
+			[Bindable]
+			public var editData:EditData;
+			
+			
+			private var vResult:ValidationResultEvent;
+			
+			// Function to validate data and submit it to the server. 
+			protected function validateAndSubmit():void {
+				/* vResult = vproductName.validate();
+				if (vResult.type==ValidationResultEvent.VALID){
+					productName.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF"); */
+					
+					vResult = vproductNumber.validate();
+					if (vResult.type==ValidationResultEvent.VALID){
+						
+						productNumber.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+						vResult = vreorderNumber.validate();
+						if (vResult.type==ValidationResultEvent.VALID){
+							
+							reorderNumber.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+							vResult = vvendorContact.validate();
+							if (vResult.type==ValidationResultEvent.VALID){
+								
+								vendorContact.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+								vResult = vvendorEmail.validate();
+								if (vResult.type==ValidationResultEvent.VALID){
+									
+									vendorEmail.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+									vResult = vinstoreDate.validate();
+									if (vResult.type==ValidationResultEvent.VALID){
+										
+										instoreDate.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+										vResult = vnumberofstores.validate();
+										if (vResult.type==ValidationResultEvent.VALID){
+											
+											numberofStore.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+											vResult = vnumberforarchway.validate();
+											if (vResult.type==ValidationResultEvent.VALID){
+												
+												numberforArchway.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+												numberforArchway.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+												saveJobData();
+											}
+											numberforArchway.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+											return;
+										}
+										numberofStore.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+										return;
+									 }
+									instoreDate.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+									return;
+								}
+								vendorEmail.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+								return;
+							}
+							vendorContact.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+							return;
+						}
+						reorderNumber.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+						return;
+					}
+					productNumber.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+					return;
+					
+				/* }
+				productName.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+				return; */ 
+			}
+			
+			protected function validateInput():void {
+				/* vResult = vproductName.validate();
+				if (vResult.type==ValidationResultEvent.VALID){
+					productName.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF"); */
+					
+					vResult = vproductNumber.validate();
+					if (vResult.type==ValidationResultEvent.VALID){
+						productNumber.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+						vResult = vreorderNumber.validate();
+						if (vResult.type==ValidationResultEvent.VALID){
+							reorderNumber.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+							vResult = vvendorContact.validate();
+							if (vResult.type==ValidationResultEvent.VALID){
+								vendorContact.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+								vResult = vvendorEmail.validate();
+								if (vResult.type==ValidationResultEvent.VALID){
+									vendorEmail.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+									vResult = vinstoreDate.validate();
+									if (vResult.type==ValidationResultEvent.VALID){
+										instoreDate.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+										vResult = vnumberofstores.validate();
+										if (vResult.type==ValidationResultEvent.VALID){
+											numberofStore.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+											vResult = vnumberforarchway.validate();
+											if (vResult.type==ValidationResultEvent.VALID){
+												numberforArchway.styleDeclaration.setStyle("contentBackgroundColor", "#FFFFFF");
+												return;
+											}
+											numberforArchway.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+											return;
+										}
+										numberofStore.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+										return;
+									}
+									instoreDate.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+									return;
+								}
+								vendorEmail.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+								return;
+							}
+							vendorContact.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+							return;
+						}
+						reorderNumber.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+						return;
+					}
+					productNumber.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+					return;
+					
+				/* }
+				productName.styleDeclaration.setStyle("contentBackgroundColor","#FF0000");
+				return; */ 
+			}
+			
+			protected function saveJobData():void
+			{
+				var jobData:JobData = new JobData();
+				jobData._jobType = 3;
+				jobData._productName = productName.text;
+				jobData._productNumber = productNumber.text;
+				jobData._reorderNumber = reorderNumber.text;
+				jobData._reorderNumber2 = reorderNumber2.text;
+				jobData._vendorContact = vendorContact.text;
+				jobData._vendorEmail = vendorEmail.text;
+				jobData._vendorTelephone = vendorTelephone.text;
+				jobData._instoreDate = instoreDate.selectedDate;
+				jobData._numberofStore = numberofStore.value;
+				jobData._numberforArchway = numberforArchway.value;
+				jobData._jobNotes = jobNotes.text;
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.JOB_DATA);
+				saveDataEvent.jobData = jobData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+				
+			}
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			protected function registerHandler(event:MouseEvent):void
+			{
+				productName.text = productName.text + "®";
+			}
+			protected function tradeHandler(event:MouseEvent):void
+			{
+				productName.text = productName.text + "™";
+			}
+			
+
+			protected function formitemlabel1_linkHandler(event:TextEvent):void
+			{
+				var u:URLRequest = new URLRequest("mailto:Lisa.B.Crawford@Lowes.com");
+				navigateToURL(u,"_self");
+			}
+			
+			public function init():void
+			{
+				if (editData._editJob.reorderNumber !== undefined) {
+					productName.text = editData._editJob.productName;
+					productNumber.text = editData._editJob.productNumber;
+					reorderNumber.text = editData._editJob.reorderNumber;
+					reorderNumber2.text = editData._editJob.reorderNumber2;
+					vendorContact.text = editData._editJob.vendorContact;
+					vendorEmail.text = editData._editJob.vendorEmail;
+					vendorTelephone.text = editData._editJob.vendorTelephone;
+					instoreDate.selectedDate = new Date(editData._editJob.instoreDate.fullYear, editData._editJob.instoreDate.month, editData._editJob.instoreDate.date);
+					numberofStore.value = editData._editJob.numberofStore;
+					numberforArchway.value = editData._editJob.numberforArchway;
+					jobNotes.text = editData._editJob.jobNotes;
+				}
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Panel title="Job Information" width="90%" height="90%" horizontalCenter="0" toolTip="Roll over items for instructions.">
+		<mx:Canvas width="100%" height="100%" >
+			<s:Group horizontalCenter="0">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:HorizontalLayout/>
+					</s:layout>
+					<mx:Form fontSize="16">
+						<mx:FormItemLabel text="Job Information" fontWeight="bold"/>
+						<mx:FormItem  label="Lowes Product Name:" >
+							<s:TextInput id="productName" toolTip="The text for the product name &#13;(e.g. Boutique®)" />
+							<mx:HBox>
+								<s:Button label="®" click="registerHandler(event);" toolTip="Click to add ® to the end of your Product Name."/>
+								<s:Button label="™" click="tradeHandler(event);" toolTip="Click to add ™ to the end of your Product Name."/>
+							</mx:HBox>	
+						</mx:FormItem>
+						<mx:FormItem label="Lowes Stock Item Number:" >
+							<s:TextInput id="productNumber" change="validateInput()" toolTip="The product number that prints under the name." errorString="Product Number is required."/>
+						</mx:FormItem>
+						<mx:FormItem label="Item Number (Shower Only):" >
+							<s:TextInput id="reorderNumber2" toolTip="You MUST have the Archway reorder number to proceed."/>
+						</mx:FormItem>
+						<mx:FormItem label="Reorder Number:" >
+							<s:TextInput id="reorderNumber" change="validateInput()" toolTip="You MUST have the Archway reorder number to proceed." errorString="Reorder Number is required."/>
+						</mx:FormItem>
+						<mx:Spacer height="25"/>
+						
+						<mx:FormItemLabel text="Vendor Information" fontWeight="bold"/>
+						<mx:FormItem label="Vendor Contact:">
+							<s:TextInput id="vendorContact" change="validateInput()" toolTip="(e.g. Firstname Lastname)" errorString="Vendor Contact is required."/>
+						</mx:FormItem>
+						<mx:FormItem label="Vendor Email:">
+							<s:TextInput id="vendorEmail" change="validateInput()" toolTip="Your contact email &#13;(e.g. email@address.com)" errorString="Vendor Email is required."/>
+						</mx:FormItem>
+						<mx:FormItem label="Vendor Telephone:">
+							<s:TextInput id="vendorTelephone" toolTip="(e.g. 555-555-5555)"/>
+						</mx:FormItem>
+					</mx:Form>
+					<mx:Form fontSize="16">
+						<mx:FormItemLabel text="Order Information" fontWeight="bold"/>
+						<mx:FormItem label="Requested Instore Date:" >
+							<mx:DateField id="instoreDate" change="validateInput()" toolTip="Click text field to choose date." errorString="Instore Date is required."/>
+						</mx:FormItem>
+						<mx:FormItem label="Numer of stores to be printed for:">
+							<s:NumericStepper id="numberofStore" change="validateInput()" minimum="1" maximum="10000000" toolTip="Click or type quantity of stores." errorString="Must fill in Qty."/>
+						</mx:FormItem>
+						<mx:FormItem label="Number of printed for Archway:">
+							<s:NumericStepper id="numberforArchway" change="validateInput()" minimum="1" maximum="10000000" toolTip="Click or type quantity for Archway." errorString="Must fill in Qty."/>
+						</mx:FormItem>
+						<mx:Spacer height="25"/>
+						<mx:FormItemLabel text="Additional Information:" fontWeight="bold"/>
+						<s:TextArea id="jobNotes" height="127" width="295" toolTip="Add any additional notes to the order."/>
+					</mx:Form>			
+				</s:Group>
+				
+			</s:Group>
+		</mx:Canvas>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" dock="true" bottom="2">
+		<s:Button label="BACK" click="backPanel()"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" bottom="10"  click="validateAndSubmit()"/>
+	</mx:ApplicationControlBar>
+</s:Group>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="100%">
+	
+	<fx:Declarations>
+		<mate:Listener type="{NavigationEvent.NEW_JOB}"			receive="init()"/>
+		<mate:Listener type="{NavigationEvent.TEMPLATE}" 		receive="checkShowerOnly()"/>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayCollection id="Concept">
+			<fx:Object index="0" label="7.9 x 4.25" webshop="7.9x4.25"/>
+			<fx:Object index="1" label="11.75 x 4.25" webshop="11.75x4.25"/>
+			<fx:Object index="2" label="11.75 x 6" webshop="11.75x6"/>
+		</s:ArrayCollection>
+		
+		<s:ArrayCollection id="TypeOld">
+			<fx:Object index="0" label="Centerset" 		webshopColor="Centerset_PMS360.eps" 				webshopSize="7.9x4.25"/>
+			<fx:Object index="1" label="Widespread" 	webshopColor="Widespread_PMS348.eps" 				webshopSize="11.75x4.25"/>
+			<fx:Object index="2" label="Roman Tub" 		webshopColor="RomanTub_40 Percent PMS 320.eps" 		webshopSize="11.75x4.25"/>
+			<fx:Object index="3" label="Tub / Shower" 	webshopColor="TubShower_PMS320.eps" 				webshopSize="11.75x4.25"/>
+			<fx:Object index="4" label="Pulldown" 		webshopColor="PullDown_PMS 2935.eps" 				webshopSize="11.75x6"/>
+			<fx:Object index="5" label="Pullout" 		webshopColor="PullOut_PMS 2736.eps" 				webshopSize="11.75x6"/>
+			<fx:Object index="6" label="Kitchen" 		webshopColor="Kitchen_PMS 261.eps" 					webshopSize="11.75x6"/>
+			<fx:Object index="7" label="Bar / Laundry" 	webshopColor="BarLaundry_40 Percent PMS 261.eps" 	webshopSize="7.9x4.25"/>
+			<fx:Object index="11" label="Centerset (Install 1 hole or 4)"	webshopColor="7.9x4.25_centersetinstall1hole.indd NOT USED ANYMORE"	webshopSize="7.9x4.25"/>
+		</s:ArrayCollection>
+		
+		<s:ArrayCollection id="Type">
+			<fx:Object index="0" label="Widespread" 			webshopColor="11.75x2.625_widespread.indd" 			webshopSize="11.75x2.625:Blue"/>
+			<fx:Object index="1" label="Roman Tub" 				webshopColor="11.75x2.625_romantub.indd"		 	webshopSize="11.75x2.625:Blue"/>
+			<fx:Object index="2" label="Tub / Shower" 			webshopColor="11.75x2.625_tubshower.indd" 			webshopSize="11.75x2.625:Blue"/>
+			<fx:Object index="3" label="Tub / Shower (Shower Only)" 			webshopColor="11.75x2.625_showeronly.indd" 			webshopSize="11.75x2.625:Shower"/>
+			<fx:Object index="4" label="Kitchen Pulldown" 		webshopColor="11.75x2.625_pulldown.indd" 			webshopSize="11.75x2.625:Green"/>
+			<fx:Object index="5" label="Kitchen Pullout" 		webshopColor="11.75x6_pullout.indd" 				webshopSize="11.75x6:Green"/>
+			<fx:Object index="6" label="Kitchen Faucet" 		webshopColor="11.75x6_kitchenfaucet.indd" 			webshopSize="11.75x6:Green"/>
+			<fx:Object index="7" label="Centerset" 				webshopColor="7.9x2.625_centerset.indd" 			webshopSize="7.9x2.625:Blue"/>
+			<fx:Object index="8" label="Laundry Faucet" 		webshopColor="7.9x2.625_laundryfaucet.indd" 		webshopSize="7.9x2.625:Blue"/>
+			<fx:Object index="9" label="Bar Faucet" 			webshopColor="7.9x2.625_bar.indd" 					webshopSize="7.9x2.625:Green"/>
+			<fx:Object index="10" label="Tub Only"				webshopColor="11.75x2.625_tubonly.indd"  			webshopSize="11.75x2.625:Blue"/>
+			<fx:Object index="11" label="Vessel"				webshopColor="7.9x2.625_Vessel.indd"  				webshopSize="7.9x2.625:Blue"/>
+		</s:ArrayCollection>
+		
+		<s:ArrayCollection id="Color">
+			<fx:Object index="0" label="Bay 1 Centerset" webshop="Centerset_PMS360.eps"/>
+			<fx:Object index="1" label="Bay 2 Widespread" webshop="Widespread_PMS348.eps"/>
+			<fx:Object index="2" label="Bay 3 Roman Tub" webshop="RomanTub_40 Percent PMS 320.eps"/>
+			<fx:Object index="3" label="Bay 3 Tub / Shower" webshop="TubShower_PMS320.eps"/>
+			<fx:Object index="4" label="Bay 4 Pulldown" webshop="PullDown_PMS 2935.eps"/>
+			<fx:Object index="5" label="Bay 5 Pullout" webshop="PullOut_PMS 2736.eps"/>
+			<fx:Object index="6" label="Bay 6 Kitchen" webshop="Kitchen_PMS 261.eps"/>
+			<fx:Object index="7" label="Bay 6 Bar / Laundry" webshop="BarLaundry_40 Percent PMS 261.eps"/>
+			<fx:Object index="8" label="Vessel" webshop="Vessel_50 Percent PMS 348.eps"/>
+		</s:ArrayCollection>		
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			public var editData:EditData;
+			
+			protected function vResult():void
+			{
+				var templateSelected:int;
+				templateSelected = templateType.selectedIndex;
+			}
+			
+			protected function saveTemplateData():void
+			{
+				var templateData:TemplateData = new TemplateData();
+				templateData._templateType = templateType.selectedItem;
+				templateData._showerOnly = showerOnly.selected;
+				templateData._hardWare = hardWare.selected;
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.TEMPLATE_DATA);
+				saveDataEvent.templateData = templateData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+			}
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			
+			public function init():void
+			{
+				if (editData._editTemplate !== undefined) {
+					//templateType.selectedIndex = findIndex(Type, "webshopColor", editData._editTemplate.templateColor);
+					templateType.selectedIndex = findIndex(Type, "label", editData._editTemplate.templateType);
+					showerOnly.selected = editData._editTemplate.showerOnly;
+					hardWare.selected = editData._editTemplate.hardWare;
+				}
+			}
+			
+			private function findIndex(dp:ArrayCollection, prop:String, what:String ):int {
+				for(var k:int=0; k<dp.length; k++) {
+					if(String(dp.getItemAt(k)[prop])==what) return k;
+				}
+				return -1;
+			}
+
+			private function checkShowerOnly():void {
+				
+				if (templateType.selectedIndex == 3) {
+					showerOnly.enabled = true;
+					hardWare.enabled = false;
+				}
+				else {
+					showerOnly.enabled = false;
+					hardWare.enabled = true;
+					showerOnly.selected = false;
+				}
+				
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Panel title="Choose Template" width="90%" height="90%" horizontalCenter="0" toolTip="Roll over items for instructions." >
+		<mx:Canvas width="100%" height="100%">
+		<s:Group width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout/>
+			</s:layout>
+				<mx:HBox horizontalCenter="0" width="100%">
+					<mx:Spacer width="25%">
+						
+					</mx:Spacer>
+					<mx:Form fontSize="16" horizontalCenter="0" dropShadowVisible="false" textAlign="left">
+						<mx:FormItem label="Template Type:">
+							<s:ComboBox id="templateType" width="300" requireSelection="true" dataProvider="{Type}" toolTip="Choose what type of item." change="checkShowerOnly()" />
+						</mx:FormItem>
+						<mx:FormItem label="Avaliable as shower only:" toolTip="Adds the Avaliable as shower only tag to the template.">
+							<s:CheckBox id="showerOnly" enabled="false" toolTip="Adds the Avaliable as shower only tag to the template."/>
+						</mx:FormItem>
+						<mx:FormItem label="Coordinating hardware avaliable:" toolTip="Adds the Coordinating hardware avaliable tag to the template.">
+							<s:CheckBox id="hardWare" enabled="true" toolTip="Adds the Coordinating hardware avaliable tag to the template."/>
+						</mx:FormItem>
+					</mx:Form>
+				</mx:HBox>
+				
+			</s:Group>	
+		</mx:Canvas>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" dock="true" bottom="2">
+		<s:Button label="BACK" enabled="false"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" click="saveTemplateData()"/>
+	</mx:ApplicationControlBar>			
+</s:Group>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="How to get started" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="{FlexGlobals.topLevelApplication.width * .8}" 
+			   height="{FlexGlobals.topLevelApplication.height * .8}"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   toolTip="Roll over items for instructions."
+			   creationCompleteEffect="{fadeIn}"
+			   creationComplete="init()"
+			   close="handleCloseEvent()"  >
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals; 
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			
+			public var alertTimer:Timer = new Timer(10000, 1);
+			
+			private function init():void {
+				//alertTimer.start();
+				alertTimer.addEventListener(TimerEvent.TIMER_COMPLETE, alertTimerComplete);
+			}
+			
+			private function alertTimerComplete(event:TimerEvent):void{
+				PopUpManager.removePopUp(this);
+			}
+			
+			// Handle the close button and Cancel button.
+			private function handleCloseEvent():void {
+				alertTimer.stop();
+				PopUpManager.removePopUp(this);
+			}            
+		]]>
+	</fx:Script>
+	
+	<fx:Style source="MagPrint.css"/>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:Fade alphaFrom="0.0" alphaTo="1.0" id="fadeIn" duration="500"/>
+		<mx:DateFormatter id="myDate" formatString="MM / DD / YYYY"/>
+	</fx:Declarations>
+
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button label="CLOSE" color="#000000" click="handleCloseEvent()"/>
+	</s:controlBarContent>
+
+	<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx" >
+	<mx:Canvas width="{this.width}" height="{this.height * .8}" verticalScrollPolicy="auto">
+		<mx:ApplicationControlBar top="25" fontSize="16" width="{this.width * .8}" horizontalCenter="0">
+			<s:Button label="Home" toolTip="Click to go back to http://www.mktalliance.com customer portal."/>
+			<mx:Text text="|" />
+			<mx:Text text=" {myDate.format(new Date())}"/>
+			<mx:Text text="|" />
+			<s:Button label="Help?" toolTip="Click to open the Help Documentation."/>
+			<mx:Spacer width="100%" />
+			<s:Button label="New Proof" toolTip="NEW is creating art for a proof to approve."/>
+			<s:Button label="Edit Proof" toolTip="EDIT is for corrections for an existing proof."/>
+		</mx:ApplicationControlBar>
+			<mx:Text id="txt" top="80" horizontalCenter="0" width="{this.width * .85}" height="{this.height * 1.1}" fontSize="16"
+					 render="invalidateSize();validateNow(); txt.mx_internal::getTextField().wordWrap=true">
+				<mx:htmlText>
+					<![CDATA[<p><b>This explains the example menu bar above. </b>If you hover the mouse over the button a tooltip will appear to explain what each button does.</p>
+<p><b>HOME</b> - Clicking on the Home button will return you to http://www.mktalliance.com for the customer portal.</p>
+<p><b>HELP</b> - Clicking on the Help button will open a step-by-step tutorial that explains the function of each page.</p>
+<p><b>REORDER NUMBER</b> - YOU MUST OBTAIN A REODER # FROM LOWE'S BEFORE PROCEEDING.</p>
+<p><b>NEW PROOF</b> - Clicking on the Create Proof button will allow you to create a new channel card step-by-step, from selecting your template to adding your logo and / or icons. Once your selections have been made, you will be sent an order confirmation and e-mailed a proof for approval.</p>
+<p><b>EDIT PROOF</b> - Clicking on the Edit Proof button will allow you to make changes or corrections to an existing proof.</p>
+					
+<p><b>NOTE: After reading the instructions for the site, click Close button below to proceed.</b></p>
+					]]>
+				</mx:htmlText>
+			</mx:Text>		
+	</mx:Canvas>
+	
+	</s:Group>
+</s:TitleWindow>

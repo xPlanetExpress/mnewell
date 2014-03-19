@@ -1,0 +1,78 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+global
+{
+	font-weight: normal;
+	font-family: Arial;
+	/*content-background-color: #66CC66;*/
+}
+
+/*.roundedTI
+{
+	corner-radius: 10;
+	borderStyle: solid;
+	borderSkin: ClassReference("DateFieldSkin");
+}*/
+
+mx|ApplicationControlBar
+{
+	fill-alphas:	1, 1;
+/*	fill-colors:    #35c2fc,  #caefff;*/
+	fill-colors:  	#FFFFFF,  #C0E3FF  ;
+/*	borderColor: #caefff;
+	borderAlpha: 0.4;
+	borderThicknessBottom: NaN;
+	borderThicknessLeft: 10;
+	borderThicknessRight: 10;
+	borderThicknessTop: 2;*/
+		
+}
+
+mx|Alert
+{
+	fontWieght: bold;
+	fontSize: 20;
+	corner-radius: 18;
+}	
+
+mx|DataGrid
+{
+	selectionColor: #69bbfa;	
+}
+
+mx|ToolTip {
+	backgroundAlpha: 1.0;
+	backgroundColor: #C0E3FF;
+	color: black;
+	cornerRadius: 0;
+	fontSize: 28;
+}
+
+s|Panel
+{
+	fontWieght: bold;
+	fontSize: 20;
+	corner-radius: 18;
+	borderStyle: solid;
+}
+
+s|TitleWindow {
+	fontSize: 20;
+	corner-radius: 18;
+	borderStyle: solid;
+	color: #000000;
+/*	backgroundColor: #efefef;
+	chromeColor: #CBCBCB;*/
+}
+
+
+/*@font-face
+{
+	fontFamily: "Gill Sans MT";
+	src: url("assets/fonts/Gill Sans MT.ttf");
+	embedAsCFF: true;
+}*/
+	

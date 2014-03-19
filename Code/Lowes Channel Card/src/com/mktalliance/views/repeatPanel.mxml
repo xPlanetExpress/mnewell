@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="Choose Order"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="{FlexGlobals.topLevelApplication.width * .9}" 
+			   height="{FlexGlobals.topLevelApplication.height * .9}"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   close="handleCloseEvent();"
+			   creationComplete="init()"
+			   creationCompleteEffect="{fadeIn}">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.EditEvent;
+			import com.mktalliance.events.NavigationEvent;
+			import com.mktalliance.vos.EditData;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.FlexGlobals;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			public var editData:EditData = new EditData();
+			
+			// Handle the close button and Cancel button.
+			private function handleCloseEvent():void {
+				PopUpManager.removePopUp(this);
+			}            
+			
+			// Handle the OK button.
+			private function init():void {
+				// Check credentials (not shown) then remove pop up.
+				cfSearch.getData();
+			}
+			
+			public function cfTemplateHandler(event:ResultEvent):void{
+				cfSearch.getIcons(event.result[0].jobID)
+				editData._editTemplate = event.result[0];
+			}
+			
+			public function cfIconHandler(event:ResultEvent):void{
+				editData._editIcons = event.result;
+				
+				var editDataEvent:com.mktalliance.events.EditEvent = new EditEvent(com.mktalliance.events.EditEvent.EDIT_JOB);
+				editDataEvent.editData = editData;
+				dispatchEvent(editDataEvent);
+				
+				var newJobEvent:com.mktalliance.events.NavigationEvent = new NavigationEvent(NavigationEvent.NEW_JOB);
+				dispatchEvent(newJobEvent);
+				PopUpManager.removePopUp(this);
+			}
+			
+			public function cfSearchFaultHandler(Event:FaultEvent):void {
+				Alert.show(String(Event.fault.faultDetail),"Search Error");
+			}
+			
+			public function cfSearchHandler(Event:ResultEvent):void{
+				searchData.dataProvider = Event.result;
+			}
+			
+			public function getTemplate(jobID:int):void{
+				cfSearch.getTemplate(jobID);
+			}
+			
+			public function getIcons(jobID:int):void{
+				cfSearch.getIcons(jobID);
+			}
+			
+			public function editJob():void{
+				editData._editJob = searchData.selectedItem;
+				getTemplate(searchData.selectedItem.id);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:Fade alphaFrom="0.0" alphaTo="1.0" id="fadeIn" duration="800"/>
+		<!--endpoint="http://my.mktalliance.com/flex2gateway/"
+		source="ext.lowes.apps.databaseService">
+		endpoint="http://localhost:8500/flex2gateway/"
+		source="MagPrintConcept-debug.databaseService">
+		-->
+		<s:RemoteObject id="cfSearch" showBusyCursor="true"
+						destination="ColdFusion"
+						endpoint="http://my.mktalliance.com/flex2gateway/"
+						source="ext.lowes.apps.databaseService">
+			<s:method name="getData" fault="cfSearchFaultHandler(event)" result="cfSearchHandler(event)">
+				<s:arguments>
+					<jobType>3</jobType>
+					<searchString>{searchString.text}</searchString>
+				</s:arguments>
+			</s:method>
+			<s:method name="getTemplate" fault="cfSearchFaultHandler(event)" result="cfTemplateHandler(event)">
+				<s:arguments>
+					<jobID></jobID>
+				</s:arguments>
+			</s:method>
+			<s:method name="getIcons" fault="cfSearchFaultHandler(event)" result="cfIconHandler(event)">
+				<s:arguments>
+					<jobID></jobID>
+				</s:arguments>
+			</s:method>
+		</s:RemoteObject>
+	</fx:Declarations>
+
+
+	<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx" >
+			<mx:DataGrid id="searchData" x="0" y="0"  width="{this.width}" height="{this.height - 75}" >
+				<mx:columns>
+					<mx:DataGridColumn headerText="Reorder Number" 		dataField="reorderNumber"/>
+					<mx:DataGridColumn headerText="Product Name" 		dataField="productName"/>
+					<mx:DataGridColumn headerText="Product Number" 		dataField="productNumber"/>
+					<mx:DataGridColumn headerText="Template Type" 		dataField="templateType"/>
+					<mx:DataGridColumn headerText="Template Size"		dataField="templateSize"/>
+					<mx:DataGridColumn headerText="Vendor Logo"			dataField="vendorLogo"/>
+					<mx:DataGridColumn headerText="Number of Stores" 	dataField="numberofStore"/>
+					<mx:DataGridColumn headerText="Number for Archway" 	dataField="numberforArchway"/>
+					<mx:DataGridColumn headerText="Job Notes" 			dataField="jobNotes"/>
+				</mx:columns>
+			</mx:DataGrid>
+	</s:Group>
+	<s:controlBarContent>
+		<mx:Text id="companyLabel" text="Search" fontWeight="bold"/>
+		<s:TextInput id="searchString" width="254" change="cfSearch.getData()"/>
+		<mx:Text text="Search by Product Name or Reorder Number"/>
+		<mx:Spacer width="100%"/>
+		<mx:Text text="Select job and click Go"/>
+		<s:Button label="Go" click="editJob()"/>
+	</s:controlBarContent>
+</s:TitleWindow>

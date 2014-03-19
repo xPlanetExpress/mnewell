@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 width="100%" height="100%"
+		 creationComplete="init()">
+	
+	<fx:Declarations>
+		<mate:Listener type="{NavigationEvent.HOLE_CONFIG}"			receive="init()"/>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayCollection id="skuList">
+			<fx:Object name="Savile" image="assets/holes/1 2 3 or 4 hole.png" sku="0000" desc="Installs on 1,2,3 or 4 hole sinks" 	webshop="1 2 3 or 4 Holes.inds"/>
+			<fx:Object name="Dorsey" image="assets/holes/1 2 or 3 hole.png" sku="0001" desc="Installs on 1,2 or 3 hole sinks" 	webshop="1 2 or 3 Holes.inds"/>
+			<fx:Object name="Allura" image="assets/holes/1 or 3 hole.png" sku="0002" desc="Installs on 1 or 3 hole sinks" 		webshop="1 or 3 Holes.inds"/>
+			<fx:Object name="Allura" image="assets/holes/1 or 2 hole.png" sku="0002" desc="Installs on 1 or 2 hole sinks" 		webshop="1 or 2 holes.inds"/>
+			<fx:Object name="Savile" image="assets/holes/2 or 3 hole.png" sku="0000" desc="Installs on 1 or 3 hole sinks" 		webshop="2 or 3 Holes.inds"/>
+			<fx:Object name="Dorsey" image="assets/holes/2 or 4 hole.png" sku="0001" desc="Installs on 1,2 or 4 hole sinks" 	webshop="2 or 4 Holes.inds"/>
+			<fx:Object name="Dorsey" image="assets/holes/2 3 or 4 hole.png" sku="0001" desc="Installs on 2, 3 or 4 hole sinks" 	webshop="2 3 or 4 holes.inds"/>
+			<fx:Object name="Allura" image="assets/holes/3 hole.png" sku="0002" desc="Installs on 1,2,3 or 4 hole sinks" 		webshop="3 Holes.inds"/>
+			<fx:Object name="Savile" image="assets/holes/3 or 4 hole.png" sku="0000" desc="Installs on 1 or 3 hole sinks" 		webshop="3 or 4 Holes.inds"/>
+			<fx:Object name="Savile" image="assets/holes/3 or 4 hole centerset.png" sku="0000" desc="Installs on 1 or 3 hole Centerset" 		webshop="3 or 4 holes centerset.inds"/>
+			<fx:Object name="Dorsey" image="assets/holes/4 hole.png" sku="0001" desc="Installs on 1,2 or 4 hole sinks" 			webshop="4 Holes.inds"/>
+		</s:ArrayCollection>
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			public var editData:EditData;
+			
+			protected function saveHoleData():void
+			{
+				var holeData:HoleData = new HoleData();
+				holeData._holeConf = holeConf.selectedItem; 
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.HOLE_DATA);
+				saveDataEvent.holeData = holeData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+			}
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			
+			public function init():void
+			{
+				if (editData._editIcons.length !== undefined) {
+					var selectHole:int = findIndex(editData._editIcons as ArrayCollection, "iconType", "2");
+					holeConf.selectedIndex = findIndex(skuList, "webshop", editData._editIcons[selectHole].iconData);
+				}
+			}
+			
+			private function findIndex(dp:ArrayCollection, prop:String, what:String ):int {
+				for(var k:int=0; k<dp.length; k++) {
+					if(String(dp.getItemAt(k)[prop])==what) return k;
+				}
+				return -1;
+			}
+		]]>
+	</fx:Script>
+	<s:Panel title="Hole Configuration" width="90%" height="90%" horizontalCenter="0">
+		<mx:DataGrid id="holeConf" x="10" y="10" dataProvider="{skuList}" width="98%" height="88%">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Configuration" sortable="false" dataField="image">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Image height="65" source="{data.image}" smoothBitmapContent="true" toolTip="Click to select configuration."/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" bottom="2">
+		<s:Button label="BACK" click="backPanel()"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" click="saveHoleData()"/>
+	</mx:ApplicationControlBar>			
+	
+</s:Group>

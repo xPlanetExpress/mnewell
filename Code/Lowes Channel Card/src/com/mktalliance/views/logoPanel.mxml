@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="100%" height="100%"
+		 creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mate:Listener type="{NavigationEvent.VENDOR_LOGO}"			receive="init()"/>
+		
+		<s:ArrayCollection id="skuList">
+			<fx:Object name="Aquasource" 		image="assets/logos/aquasource.png" 	webshop="aquasource.inds" />
+			<fx:Object name="American Standard" image="assets/logos/american.png"	 	webshop="american.inds" />
+			<fx:Object name="Aqualife" 			image="assets/logos/aqualife.png" 		webshop="Aqualife.inds" />
+			<fx:Object name="Delta" 			image="assets/logos/delta.png"  		webshop="Delta.inds" />
+			<fx:Object name="cleanFlo" 			image="assets/logos/CleanFlo.png"  		webshop="CleanFlo.inds" />
+			<fx:Object name="Giagni" 			image="assets/logos/giagni.png" 		webshop="Giagni.inds" />
+			<fx:Object name="Kohler" 			image="assets/logos/kohler.png" 		webshop="Kohler.inds" />
+			<fx:Object name="Moen" 				image="assets/logos/moen.png" 			webshop="Moen.inds" />
+			<fx:Object name="Peerless" 			image="assets/logos/peerless.png" 		webshop="Peerless.inds" />
+			<fx:Object name="Price Pfister" 	image="assets/logos/Price Pfister.png"  webshop="pricePfister.inds" />
+			<fx:Object name="Symmons" 			image="assets/logos/symmons.png" 		webshop="Symmons.inds" />
+			<fx:Object name="Project Source"	image="assets/logos/projectsource.png" 	webshop="projectsource.inds" />
+			<fx:Object name="Homewerks"			image="assets/logos/homewerks.png" 	webshop="homewerks.inds" />
+		</s:ArrayCollection>
+	</fx:Declarations>
+
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			public var editData:EditData;
+			
+			protected function saveLogoData():void
+			{
+				var logoData:LogoData = new LogoData();
+				logoData._vendorLogo = vendorLogo.selectedItem;
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.LOGO_DATA);
+				saveDataEvent.logoData = logoData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+			}
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			
+			public function init():void
+			{
+				if (editData._editTemplate !== undefined) {
+					trace(findIndex(skuList, "webshop", editData._editTemplate.vendorLogo));
+					vendorLogo.selectedIndex = findIndex(skuList, "webshop", editData._editTemplate.vendorLogo);
+				}
+			}
+			
+			private function findIndex(dp:ArrayCollection, prop:String, what:String ):int {
+				for(var k:int=0; k<dp.length; k++) {
+					if(String(dp.getItemAt(k)[prop])==what) return k;
+				}
+				return -1;
+			}
+		]]>
+	</fx:Script>
+	<s:Panel title="Vendor Logo" width="90%" height="90%" horizontalCenter="0">
+		<mx:Canvas width="100%" height="100%">
+			<s:Group horizontalCenter="0" width="100%" height="100%">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<mx:DataGrid id="vendorLogo" x="10" y="10" selectedIndex="0" horizontalCenter="0" dataProvider="{skuList}" width="100%" height="100%" >
+					<mx:columns>
+						<mx:DataGridColumn headerText="Logos" dataField="image" sortable="false">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:Image horizontalAlign="center" width="140" height="130" source="{data.image}" smoothBitmapContent="true" toolTip="Click to select logo."/>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+					</mx:columns>
+				</mx:DataGrid>
+			</s:Group>
+		</mx:Canvas>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" bottom="2">
+		<s:Button label="BACK" click="backPanel()"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" click="saveLogoData()"/>
+	</mx:ApplicationControlBar>			
+	
+</s:Group>

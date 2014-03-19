@@ -1,0 +1,56 @@
+<jobs>
+  <job>
+    <template useremail="nicole.bailey@mktalliance.com">WebShop:Templates:Rack Card:24x28:2012_Design_Inspirations:DesignInspirations_2F_LftCd.indd</template>
+    <output jobname="2D35P_CHICAGO RIVER_CD">Webshop:InputPDF</output>
+    <snippets>
+      <snippet page="1">WebShop:Templates:Rack Card:24x28:2012_Design_Inspirations:Images:Snippets:LftCd_Texture_Cover.inds</snippet>
+      <snippet page="2">WebShop:Templates:Rack Card:24x28:2012_Design_Inspirations:Images:Snippets:LftCd_Texture_Liner.inds</snippet>
+    </snippets>
+    <texts>
+      <text type="spec">Avalon Beige C13^pStepping Stones C08</text>
+      <text type="spec1">Avalon Beige C13</text>
+      <text type="spec2">Stepping Stones C08</text>
+      <text type="stylename">Chicago River / Lake Michigan^pChicago River^pLake Michigan</text>
+      <text type="stylename1">Chicago River / Lake Michigan</text>
+      <text type="stylename2">Chicago River</text>
+      <text type="stylename3">Lake Michigan</text>
+    </texts>
+    <graphics>
+      <roomscenes>
+        <roomscene>WebShop:Templates:Rack Card:24x28:2012_Design_Inspirations:Images:Roomscenes:27954_00.tif</roomscene>
+        <roomscene>WebShop:Templates:Rack Card:24x28:2012_Design_Inspirations:Images:Roomscenes:27953_00.tif</roomscene>
+      </roomscenes>
+    </graphics>
+    <swatches frametype="Top" swatchweight="0.000" swatchrows="5" swatchcols="4" swatchsizewidth="4.500" swatchsizeheight="3.750" swatcharea="1">
+      <colorname>Nightwatch C01^t</colorname>
+      <colorname>Slate Grey C06^t</colorname>
+      <colorname>Skyline Steel C11^t</colorname>
+      <colorname>Silverado C16^t</colorname>
+      <colorname>Cat-Tail C02^t</colorname>
+      <colorname>Newport Brown C07^t</colorname>
+      <colorname>Dry Twig C12^t</colorname>
+      <colorname>Sandpiper C17^t</colorname>
+      <colorname>Nougat C03^t</colorname>
+      <colorname>Stepping Stones C08^t</colorname>
+      <colorname>Avalon Beige C13^t</colorname>
+      <colorname>Seashell C18^t</colorname>
+      <colorname>Brunette C04^t</colorname>
+      <colorname>Gingerbread C09^t</colorname>
+      <colorname>Haystack C14^t</colorname>
+      <colorname>Nutria C19^t</colorname>
+      <colorname>Botanical C05^t</colorname>
+      <colorname>Wetlands C10^t</colorname>
+      <colorname>Ecru C15^t</colorname>
+      <colorname>Sailcloth C20^t</colorname>
+    </swatches>
+    <JobName>2D35P_CHICAGO RIVER_CD</JobName>
+    <JobTemplate>Colortile_24x28_XML</JobTemplate>
+    <JobGroup>WebShop\Templates\Rack Card\24x28\2012_Design_Inspirations</JobGroup>
+    <inputfiles>
+      <string>\\10.1.1.110\WebShop\InputPDF\2D35P_CHICAGO RIVER_CD.pdf</string>
+    </inputfiles>
+    <indd>
+      <string>\\10.1.1.110\WebShop\InputPDF\2D35P_CHICAGO RIVER_CD.indd</string>
+    </indd>
+  </job>
+</jobs>

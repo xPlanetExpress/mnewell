@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:mate="http://mate.asfusion.com/"
+		 width="100%" height="100%"
+		 creationComplete="init()">
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mate:Listener type="{NavigationEvent.FEATURES_ICONS}"			receive="init()"/>
+		
+		<s:ArrayCollection id="bugList">
+			<fx:Object index="0" image="assets/icons/Flexible Supply Lines Included.png"	desc="Supply Lines Included (Kitchen Only)" webshop="Supply Lines Included.inds" />
+			<fx:Object index="0" image="assets/icons/Flexible Supply Lines Included2.png"	desc="Supply Lines Included (Bath Only)" webshop="Supply Lines Included2.inds" />
+			<fx:Object index="1" image="assets/icons/Water Sense.png" 						desc="Water Sense" webshop="Water Sense.inds" />
+			<fx:Object index="2" image="assets/icons/ProInstall.png"						desc="Professional Installation (Tub Only)" webshop="Professional Installation Recomended.inds"/>
+			<!--<fx:Object index="1" image="assets/icons/Water Savings.png" 					desc="Water Savings" webshop="Water Savings.eps" />-->
+		</s:ArrayCollection>
+		
+		<!--Blank Array to hold the selection-->
+		<s:ArrayCollection id="selectedList">
+		</s:ArrayCollection>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.vos.*;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			public var editData:EditData;
+			
+			protected function saveIconData():void
+			{
+				var iconData:IconData = new IconData();
+				iconData._selectedIcons = selectedBugs.dataProvider;  
+				
+				var saveDataEvent:com.mktalliance.events.DataEvent = new com.mktalliance.events.DataEvent(com.mktalliance.events.DataEvent.ICON_DATA);
+				saveDataEvent.iconData = iconData;
+				dispatchEvent(saveDataEvent);
+				
+				var nextPanel:NavigationEvent = new NavigationEvent(NavigationEvent.NEXT_PANEL);
+				dispatchEvent(nextPanel);
+			}
+			
+			protected function backPanel():void
+			{
+				var backEvent:NavigationEvent = new NavigationEvent(NavigationEvent.BACK_PANEL);
+				dispatchEvent(backEvent);
+			}
+			protected function selectBugHandler(event:MouseEvent):void
+			{
+				selectedList.addItem(previewBugs.selectedItem);
+			}
+			protected function removeBugHandler(event:MouseEvent):void
+			{
+				selectedList.removeItemAt(selectedBugs.selectedIndex);
+			}
+			
+			public function init():void
+			{
+				if (editData._editIcons.length !== undefined) {
+					var i:int;
+					selectedList.removeAll();
+					for (i=0;i<editData._editIcons.length;i++){
+						if(editData._editIcons[i].iconType == 1){
+							selectedList.addItem(bugList.getItemAt(findIndex(bugList, "webshop", editData._editIcons[i].iconData)));
+						}
+					}
+				}
+			}
+			
+			private function findIndex(dp:ArrayCollection, prop:String, what:String ):int {
+				for(var k:int=0; k<dp.length; k++) {
+					if(String(dp.getItemAt(k)[prop])==what) return k;
+				}
+				return -1;
+			}
+			
+		]]>
+	</fx:Script>
+
+	
+	<s:states>
+		<s:State name="tubshowerIcons" />
+		<s:State name="bathIcons"/>
+		<s:State name="kitchenIcons"/>
+	</s:states>
+	
+	
+	<s:Panel title="Feature Icons" width="90%" height="90%" horizontalCenter="0"  >
+		<mx:VBox id="vIcons" width="100%" height="100%">
+			<mx:Spacer height="2%"/>
+			<mx:HBox id="hIcons" width="100%" height="100%">
+				<mx:Spacer width="1%"/>
+				<mx:DataGrid id="previewBugs" dataProvider="{bugList}" toolTip="Double Click to Add Icon to the list on the right."
+							 doubleClickEnabled="true" doubleClick="selectBugHandler(event)" width="47%" height="98%">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Preview" dataField="image" width="100" sortable="false" >
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:Image width="100" height="100" source="{data.image}" toolTip="Double Click to Add Icon to the list on the right."/>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Description" dataField="desc"/>
+					</mx:columns>
+				</mx:DataGrid>
+				<mx:Spacer width="1%"/>
+				<mx:DataGrid id="selectedBugs" dataProvider="{selectedList}" doubleClickEnabled="true" 
+							 doubleClick="removeBugHandler(event)" width="47%" height="98%" toolTip="Double Click to Remove Icon.&#13; Note: Icons print in order of list top to bottom.">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Selected - Prints In Order Top to Bottom" dataField="image" sortable="false">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:Image width="100" height="100" source="{data.image}" toolTip="Double Click to Remove Icon.&#13; Note: Icons print in order of list top to bottom."/>
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						<mx:DataGridColumn headerText="Description" dataField="desc"/>
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:HBox>
+		</mx:VBox>
+	</s:Panel>
+	<mx:ApplicationControlBar fontSize="16" horizontalCenter="0" width="90%" bottom="2">
+		<s:Button label="BACK" click="backPanel()"/>
+		<mx:Spacer width="100%"/>
+		<s:Button label="NEXT" click="saveIconData()"/>
+	</mx:ApplicationControlBar>	
+</s:Group>

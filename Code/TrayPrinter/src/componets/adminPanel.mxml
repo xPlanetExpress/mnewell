@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:mkt="componets.*"
+	width="100%" height="100%" >
+    <mx:Script source="adminScript.as" />
+    <mx:WipeLeft id="WipeLeft" duration="300"/>
+	<mx:WipeRight id="WipeRight" duration="300"/>
+	<mx:TabNavigator width="100%" height="100%">
+	<mx:HBox label="Admin User Panel">
+	    <mx:ViewStack id="applicationScreens" width="100%" height="100%">
+			<mx:Canvas id="view" width="100%" height="100%" hideEffect="WipeLeft" showEffect="WipeRight">
+			<mx:DataGrid id="dataGrid"
+				dataProvider="{dataArr}"
+				rowCount="8"
+				resizableColumns="true" 
+				headerRelease="setOrder(event);"
+				right="10" left="10" top="10" bottom="71">
+					<mx:columns>
+						<mx:DataGridColumn headerText="First Name" dataField="fName" />
+						<mx:DataGridColumn headerText="Last Name" dataField="lName" />
+						<mx:DataGridColumn headerText="User Name" dataField="userName" />
+						<mx:DataGridColumn headerText="Password" dataField="password" />
+						<mx:DataGridColumn headerText="User Email" dataField="userEmail" />
+						<mx:DataGridColumn headerText="User Role" dataField="userRole" />
+					</mx:columns>
+			</mx:DataGrid>
+			<mx:Button id="btnAddNew" click="goToUpdate()" icon="@Embed('icons/AddRecord.png')" toolTip="Add Record" x="10" bottom="10"/>
+			<mx:Button id="btnDelete" click="RemoveUser()" icon="@Embed('icons/DeleteRecord.png')" toolTip="Delete Record" x="58" bottom="10"/>
+			<mx:Label text="Search by User Name" right="300" bottom="11"/>
+			<mx:TextInput id="filterTxt" width="238" toolTip="Search by fName" enter="filterResults()" right="58" bottom="11"/>
+			<mx:Button click="filterResults()" id="filterButton" icon="@Embed('icons/SearchRecord.png')" toolTip="Search by User Name" right="10" bottom="10"/>
+		</mx:Canvas>
+		<mx:Canvas id="update" width="100%" height="100%" defaultButton="{btnSubmit}" hideEffect="WipeLeft" showEffect="WipeRight">
+			<mx:Form width="100%" height="80%" id="trayuserForm">
+	            <mx:FormItem label="First Name:" id="fName_form">
+	                <mx:TextInput id="fNameCol" text=""/>
+	            </mx:FormItem>
+	            <mx:FormItem label="Last Name:" id="lName_form">
+	                <mx:TextInput id="lNameCol" text=""/>
+	            </mx:FormItem>
+	            <mx:FormItem label="User Name:" id="userName_form">
+	                <mx:TextInput id="userNameCol" text=""/>
+	            </mx:FormItem>
+	            <mx:FormItem label="Password:" id="password_form">
+	                <mx:TextInput id="passwordCol" text=""/>
+	            </mx:FormItem>
+	            <mx:FormItem label="User Email:" id="userEmail_form">
+	                <mx:TextInput id="userEmailCol" text=""/>
+	            </mx:FormItem>
+	            <mx:FormItem label="User Role:" id="userRole_form">
+	                <!--<mx:TextInput id="userRoleCol" text=""/>-->
+	                <mx:ComboBox id="userRoleCol">
+				    <mx:dataProvider>    
+				        <mx:String>user</mx:String>
+				        <mx:String>mod</mx:String>
+				        <mx:String>admin</mx:String>
+				    </mx:dataProvider>
+				</mx:ComboBox>
+	            </mx:FormItem>
+	            <mx:HBox>
+	            	<mx:Button label="Save" id="btnSubmit" click="insertUser()" right="81" bottom="10"/>
+					<mx:Button label="Cancel" id="btnCancel" click="goToView()" right="10" bottom="10"/>	
+	            </mx:HBox>
+			</mx:Form>
+		</mx:Canvas>
+		</mx:ViewStack>
+	</mx:HBox>	
+	<mx:HBox id="adminMoldBox" label="Edit Mold Panel">
+		<mkt:moldPanel id="adminMoldPanel" width="{adminMoldBox.width}" height="{adminMoldBox.height}" creationComplete="{adminMoldPanel.dataGrid.editable = true;}" />
+	</mx:HBox>
+    </mx:TabNavigator>
+</mx:TitleWindow>

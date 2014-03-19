@@ -1,0 +1,27 @@
+<jobs>
+  <job>
+    <template useremail="michael.lehman@mktalliance.com">WebShop:Templates:Lowes Faucets:7.9x4.25:7.9x4.25_Base.indd</template>
+    <output jobname="TEEEEESTSTSTST22">SmartHotFolder:Normal Trap Vps Loose</output>
+    <snippets>
+      <snippet page="1">WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Snippets:aquasource.inds</snippet>
+    </snippets>
+    <texts>
+      <text type="spec1">55426</text><!--Product Number jobData._productNumber-->
+      <text type="spec2">55426</text><!--REORDER NUMBER HAVE NOT ADDED TO THE DATA MANAGER YET-->
+      <text type="spec3"> </text><!--This is the FP # and is not needed-->
+      <text type="stylename"> </text>
+      <text type="stylename1">{jobData._productName}</text><!--Product Name _productName-->
+    </texts>
+    <graphics>
+      <images>
+        <image>WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Images:Centersets_Bath_Vessels_Optional Dwckplate.eps</image>
+        <image>WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Images:Matching Accesories Available.eps</image>
+        <image>WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Images:Shower Only.eps</image>
+        <image>WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Images:Tub_Shower Decorative Trim Only.eps</image>
+      </images>
+      <backgrounds>
+        <background>WebShop:Templates:Lowes Faucets:7.9x4.25:Images:Backgrounds:PullDown_PMS 2935.eps</background>
+      </backgrounds>
+    </graphics>
+  </job>
+</jobs>

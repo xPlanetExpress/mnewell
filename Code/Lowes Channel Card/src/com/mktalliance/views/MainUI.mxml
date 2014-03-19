@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns:mate="http://mate.asfusion.com/"
+	xmlns:views="com.mktalliance.views.*"
+	creationCompleteEffect="{fadeIn}"  
+	creationComplete="init()">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:Fade alphaFrom="0.0" alphaTo="1.0" id="fadeIn" duration="500"/>
+		<mx:Fade alphaFrom="1.0" alphaTo="0.0" id="fadeOut" duration="500"/>
+		<mx:Move yFrom="0" yTo="{this.height - (this.height * 2)}" yBy="50" id="moveOut"/>
+		<mx:Move xFrom="0" xTo="700" xBy="50" id="moveIn"/>
+		<mx:Blur id="blurOut" blurXFrom="0" blurXTo="100"/>
+		<mx:DateFormatter id="myDate" formatString="MM / DD / YYYY"/>
+		<!-- Listeners and Dispatchers________________________________________________ -->
+		
+		<mate:Listener type="{NavigationEvent.NEW_JOB}"			receive="viewStack.visible = true" />
+		<mate:Listener type="{NavigationEvent.NEW_JOB}"			receive="currentState = 'SESSION'" />
+		<!--<mate:Listener type="{NavigationEvent.REPEAT_JOB}"		receive="viewStack.visible = true" />-->
+		<!--<mate:Listener type="{NavigationEvent.REPEAT_JOB}"		receive="currentState = 'SESSION'" />-->
+		
+		<mate:Listener type="{NavigationEvent.NEW_JOB}"			receive="info()"/>
+		<mate:Listener type="{NavigationEvent.TEMPLATE}" 		receive="viewStack.selectedIndex = 0" />
+		<mate:Listener type="{NavigationEvent.JOB_INFO}" 		receive="viewStack.selectedIndex = 1"/>
+		<mate:Listener type="{NavigationEvent.VENDOR_LOGO}" 	receive="viewStack.selectedIndex = 2" />
+		<mate:Listener type="{NavigationEvent.HOLE_CONFIG}" 	receive="viewStack.selectedIndex = 3" />
+		<mate:Listener type="{NavigationEvent.FEATURES_ICONS}" 	receive="viewStack.selectedIndex = 4" />
+		<mate:Listener type="{NavigationEvent.SUBMIT_PROOF}" 	receive="viewStack.selectedIndex = 5" />
+		<!--<mate:Listener type="{NavigationEvent.TEMPLATE}"	receive="template()"/>-->
+		<!--<mate:Listener type="{NavigationEvent.NEXT_PANEL}"	receive="viewStack.selectedIndex = viewStack.selectedIndex + 1"/>-->
+		<!--<mate:Listener type="{NavigationEvent.BACK_PANEL}"		receive="viewStack.selectedIndex = viewStack.selectedIndex - 1"/>-->
+		
+		<mate:Dispatcher id="newJob" 	generator="{NavigationEvent}"	type="{NavigationEvent.NEW_JOB}"/>
+		<mate:Dispatcher id="repeatJob" generator="{NavigationEvent}" 	type="{NavigationEvent.REPEAT_JOB}"/>
+		<mate:Dispatcher id="nextPanel" generator="{NavigationEvent}"	type="{NavigationEvent.NEXT_PANEL}"/>
+		<mate:Dispatcher id="backPanel" generator="{NavigationEvent}"	type="{NavigationEvent.BACK_PANEL}"/>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.mktalliance.events.*;
+			import com.mktalliance.views.*;
+			
+			import flash.net.*;
+			
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			
+			import spark.components.TitleWindow;
+			
+			private const TEMPLATE:uint = 0;
+			private const JOBINFO:uint = 1;
+			private const VENDOR_LOGO:uint = 2;
+			private const HOLE_CONFIG:uint = 3;
+			private const FEATURES_ICONS:uint = 4;
+			private const SUBMIT_PROOF:uint = 5;
+			
+			import mx.controls.ToolTip;
+			import mx.events.ToolTipEvent;
+			import mx.managers.ToolTipManager;
+			
+			
+			[Bindable]
+			public var currentPanel:String;
+			public var showTip:ToolTip;
+			
+			ToolTipManager.showDelay = 0;
+			ToolTipManager.hideDelay = 4000;
+			
+			protected function showToolTip():void
+			{				
+				ToolTipManager.showDelay = 0;
+				ToolTipManager.hideDelay = 4000;
+				showTip = ToolTipManager.createToolTip('Bla', 400, 400, null) as ToolTip;
+				
+			}
+			
+			protected function destroyToolTip():void
+			{
+				ToolTipManager.destroyToolTip(showTip);
+			}
+			
+			public var alertTimer:Timer = new Timer(10000, 1);
+			
+			public function repeatImport():void
+			{
+				var repeatWindow:TitleWindow = PopUpManager.createPopUp(this, repeatPanel, true, PopUpManagerChildList.POPUP) as TitleWindow;
+				PopUpManager.centerPopUp(repeatWindow);
+			}
+
+			protected function openNewWindow(event:MouseEvent):void {
+				var u:URLRequest = new URLRequest("http://my.mktalliance.com/ext/lowes/help");
+				navigateToURL(u,"_blank");
+			}
+
+			protected function homePage(event:MouseEvent):void
+			{
+				var u:URLRequest = new URLRequest("http://my.mktalliance.com/ext/lowes/");
+				navigateToURL(u,"_self");
+			}
+			
+			public function init():void
+			{
+				var helpWindow:TitleWindow = PopUpManager.createPopUp(this, mainHelp, true, PopUpManagerChildList.POPUP) as TitleWindow;
+				PopUpManager.centerPopUp(helpWindow);	
+			}
+			
+			protected function info():void
+			{
+				//var infoWindow:TitleWindow = PopUpManager.createPopUp(this, infoHelp, true, PopUpManagerChildList.POPUP) as TitleWindow;
+				//PopUpManager.centerPopUp(infoWindow);	
+			}
+			
+			protected function template():void
+			{
+				//var templateWindow:TitleWindow = PopUpManager.createPopUp(this, templateHelp, true, PopUpManagerChildList.POPUP) as TitleWindow;
+				//PopUpManager.centerPopUp(templateWindow);	
+			}
+		]]>
+	</fx:Script>
+	
+	<s:layout>
+		<s:BasicLayout/>
+	</s:layout>
+	
+	<s:states>
+		<s:State name="DEFUALT"/>
+		<s:State name="SESSION"/>
+	</s:states>
+	
+	<mx:ApplicationControlBar fontSize="16" width="100%">
+		<s:Button label="Home" click="homePage(event)" includeIn="DEFUALT, SESSION" toolTip="Click to go back to http://www.mktalliance.com cutomer portal."/>
+		<!--<mx:Text text="matt.newell@mktalliance.com" includeIn="DEFUALT, SESSION" fontWeight.SESSION="bold" fontWeight.DEFUALT="bold"/>-->
+		<mx:Text text="|" includeIn="DEFUALT, SESSION"/>
+		<mx:Text text=" {myDate.format(new Date())}" includeIn="DEFUALT, SESSION"/>
+		<mx:Text text="|" includeIn="DEFUALT, SESSION"/>
+		<s:Button label="Contact &amp; Help" includeIn="DEFUALT, SESSION" click="openNewWindow(event)" toolTip="Click to open the Help Documentation."/>
+		<mx:Spacer width="100%" includeIn="DEFUALT, SESSION"/>
+		
+		<s:Button label="New Proof" includeIn="DEFUALT" click="newJob.generateEvent();"
+				   toolTip="NEW is creating art for a proof to approve."/>
+		<s:Button label="Edit Proof" includeIn="DEFUALT" click="repeatImport();"
+				   toolTip="EDIT is for corrections for an existing proof."/>
+		
+		<mx:Text text="{currentPanel}" fontWeight="bold" includeIn="SESSION"/>
+		<!--<s:Button id="backButton" label="BACK" enabled="false" includeIn="SESSION" click="backPanel.generateEvent();"/>
+		<s:Button id="nextButton" label="NEXT" includeIn="SESSION" click="nextPanel.generateEvent();"/>-->
+	</mx:ApplicationControlBar>
+	
+	<mx:ViewStack id="viewStack" width="100%" height="90%" selectedIndex="0" y="55" horizontalCenter="0" visible="false">
+		<s:NavigatorContent label="Template" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}">
+			<views:templatePanel/>
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Job Info" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}" >
+			<views:infoPanel />
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Vendor Logo" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}">
+			<views:logoPanel/>
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Hole Configuration" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}">
+			<views:configPanel/>
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Features / Icons" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}">
+			<views:iconPanel/>
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Submit Proof" width="100%" height="100%" showEffect="{fadeIn}" hideEffect="{moveOut}">
+			<views:submitPanel/>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+</s:Group>

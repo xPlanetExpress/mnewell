@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<jobs lift="31249" width="11.75" height="8.25" library="DDPLabels.indl" outputpath="HPPF_JOBS:NextDays">
+  <job qty="1">
+    <template>000018794</template>
+    <specs>
+      <spec type="stylenames">LEGACY PARK II 12' HG726
+LEGACY PARK II 15' HG727</spec>
+      <spec type="density">3976</spec>
+      <spec type="width">12' &amp; 15'</spec>
+      <spec type="pattern">3/4"W X 1 1/4"L SM</spec>
+      <spec type="construction">BERBER TEXTURED LOOP</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">A/E</spec>
+      <spec type="faceweight">25.4</spec>
+      <spec type="fiberbrand">93% POLYPROPYLENE/7% NYLON</spec>
+      <spec type="barcode">ËU!*tZÌ</spec>
+      <spec type="topcolor">00702 ROCKY ROAD</spec>
+      <spec type="parrating">3.25</spec>
+      <spec type="workorder">40596</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW71.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW33.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW23.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW67.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW16.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW14.eps</image>
+    </bugs>
+    <parrating tab="3.25">{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="1">
+    <template>0000GE113</template>
+    <specs>
+      <spec type="stylenames">AUTHORITY HGG57</spec>
+      <spec type="density">1200</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">NONE</spec>
+      <spec type="construction">TWIST</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">6.00</spec>
+      <spec type="faceweight">25</spec>
+      <spec type="fiberbrand">100% BCF NYLON</spec>
+      <spec type="barcode">ËU")_,Ì</spec>
+      <spec type="topcolor">00124 COFFEE</spec>
+      <spec type="parrating">3.25</spec>
+      <spec type="workorder">40622</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW71.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL57.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL61.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW33.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL81.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW67.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW14.eps</image>
+    </bugs>
+    <parrating tab="3.25">{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="14">
+    <template>0000GE113</template>
+    <specs>
+      <spec type="stylenames">BASELINE HGG84</spec>
+      <spec type="density">2000</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">NONE</spec>
+      <spec type="construction">TEXTURE</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">3.10</spec>
+      <spec type="faceweight">25</spec>
+      <spec type="fiberbrand">100% BCF NYLON</spec>
+      <spec type="barcode">ËU(Oa[Ì</spec>
+      <spec type="topcolor">00744 WARM STONE</spec>
+      <spec type="parrating">2.5</spec>
+      <spec type="workorder">40401</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW70.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL57.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL61.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW33.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW20.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW14.eps</image>
+    </bugs>
+    <parrating tab="2.5">{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="2">
+    <template>0000GE113</template>
+    <specs>
+      <spec type="stylenames">WONDROUS HGJ14</spec>
+      <spec type="density">2049</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">NONE</spec>
+      <spec type="construction">TEXTURE</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">6.10</spec>
+      <spec type="faceweight">37</spec>
+      <spec type="fiberbrand">100% BCF Recyclable Nylon</spec>
+      <spec type="barcode">ËU)%Ê(Ì</spec>
+      <spec type="topcolor">00704 EASEL</spec>
+      <spec type="parrating">3.5</spec>
+      <spec type="workorder">40403</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW72.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL61.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL81.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW68.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW14.eps</image>
+    </bugs>
+    <parrating tab="3.5">{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="1">
+    <template>0000GE113</template>
+    <specs>
+      <spec type="stylenames">INSTANT IMPACT HGJ42</spec>
+      <spec type="density">3276</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">1/2"WX7/8"L HD</spec>
+      <spec type="construction">PATTERN</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">6.1</spec>
+      <spec type="faceweight">27.3</spec>
+      <spec type="fiberbrand">100% EVERTOUCH BCF NYLON</spec>
+      <spec type="barcode">ËU)LnXÌ</spec>
+      <spec type="topcolor">00301 FOREST GROVE</spec>
+      <spec type="parrating">3</spec>
+      <spec type="workorder">40413</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW72.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL57.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL32.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL61.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL81.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW68.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:SH10.eps</image>
+    </bugs>
+    <parrating tab="3">{t}{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="1">
+    <template>0000GE113</template>
+    <specs>
+      <spec type="stylenames">THORTON MANNOR HGJ69</spec>
+      <spec type="density">2250</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">1 1/4"W X 1"L HD</spec>
+      <spec type="construction">PATTERN</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">5.00</spec>
+      <spec type="faceweight">25</spec>
+      <spec type="fiberbrand">100% EVERTOUCH BCF NYLON</spec>
+      <spec type="barcode">ËU*9qNÌ</spec>
+      <spec type="topcolor">00701 NATURAL WOOD</spec>
+      <spec type="parrating">3.5</spec>
+      <spec type="workorder">40428</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW72.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL57.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL32.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL61.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL81.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW68.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:DCW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:SH10.eps</image>
+    </bugs>
+    <parrating tab="3.5">{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+  <job qty="11">
+    <template>000018794</template>
+    <specs>
+      <spec type="stylenames">FOREST GROVE HGL64</spec>
+      <spec type="density">1406</spec>
+      <spec type="width">12'</spec>
+      <spec type="pattern">NONE</spec>
+      <spec type="construction">TEXTURE</spec>
+      <spec type="backing">CLASSICBAC</spec>
+      <spec type="twist">5.0</spec>
+      <spec type="faceweight">25</spec>
+      <spec type="fiberbrand">100% BCF PET POLYESTER</spec>
+      <spec type="barcode">ËU,xSsÌ</spec>
+      <spec type="topcolor">00701 MEADOWLARK</spec>
+      <spec type="parrating">2.75</spec>
+      <spec type="workorder">40218</spec>
+    </specs>
+    <bugs>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW71.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW05.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NL13.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW67.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW09.eps</image>
+      <image>Working:Templates:Indigo:ShawGreenEdge:Images:images:NW14.eps</image>
+    </bugs>
+    <parrating tab="2.75">{t}{t}{t}{t}{t}{t}{t}{t}</parrating>
+  </job>
+</jobs>

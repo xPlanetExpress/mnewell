@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="initApp();" width="318" height="174">
+    <mx:Script source="loginScript.as" />
+		<mx:Canvas id="loginUser" width="100%" height="100%">
+		<mx:Form x="10" y="10" defaultButton="{enterbtnUser}">
+			<mx:FormItem label="Username:">
+				<mx:TextInput  id="inputUserName"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password:">
+				<mx:TextInput id="inputPassword" displayAsPassword="true" />
+			</mx:FormItem>
+			<mx:HBox>
+				<mx:Button label="Enter" id="enterbtnUser" click="ValidateUser();" />	
+				<mx:Text id="loginError" text="" width="190" color="#F20909"/>
+			</mx:HBox>
+		</mx:Form>
+		</mx:Canvas>
+</mx:TitleWindow>

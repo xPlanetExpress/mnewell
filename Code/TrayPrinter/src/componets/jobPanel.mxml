@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 	
+	themeColor="#CECECE"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:mkt="componets.*"
+	layout="absolute" creationComplete="initApp()" 
+	width="100%" height="100%"  xmlns:local="*">
+	<!--Script Source-->
+    <mx:Script source="jobScript.as" />
+    <!--Validators-->
+   	<mx:StringValidator id="jobnameColVal" source="{jobnameCol}" property="text" required="true" requiredFieldError="Job Name is required." />
+   	<mx:StringValidator id="stylenameColVal" source="{stylenameCol}" property="text" required="true" requiredFieldError="Style Name is required."/>
+   	<mx:StringValidator id="traymoldnameColVal" source="{traymoldnameCol}" property="text" required="true" requiredFieldError="A Mold must be selected below." valid="btnSubmit.enabled = true;"/>
+   	<mx:StringValidator id="edittraymoldnameColVal" source="{edittraymoldnameCol}" property="text" required="true" requiredFieldError="Select a new mold below." valid="editbtnSubmit.enabled = true;"/>
+   	<mx:DateFormatter id="dateFormatter" formatString="EEEE, MMM. D, YYYY at H:NN A"/>
+   	<!--Effects-->
+    <mx:WipeUp id="WipeUp" duration="500"/>
+	<mx:WipeDown id="WipeDown" duration="500"/>
+	
+	<mx:ViewStack id="applicationScreens" width="100%" height="100%">
+	<mx:Canvas id="view" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+		<mx:DataGrid id="dataGrid"
+			itemClick="parentApplication.buttonBar.enabled = true"
+			editable="false"
+			dataProvider="{dataArr}"
+			rowCount="8"
+			resizableColumns="true" 
+			headerRelease="setOrder(event);"
+			right="10" left="10" top="10" bottom="71" rollOverColor="#EBEBEB" selectionColor="#CECECE">
+				<mx:columns>
+					<mx:DataGridColumn headerText="trayjobid" dataField="trayjobid" visible="false" />
+					<mx:DataGridColumn headerText="Job Name:" dataField="jobname" showDataTips="true" dataTipField="To select a job use Mold Name:" width="100"/>
+					<mx:DataGridColumn headerText="Style Name:" dataField="stylename"/>
+					<mx:DataGridColumn id="statusdataCol" headerText="Status:" dataField="status" width="90" editorDataField="value" editorUsesEnterKey="true">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Image horizontalAlign="center" source="icons/statusicon{data.status}.png" toolTip="Approval Status"/>
+							</mx:Component>
+						</mx:itemRenderer>
+						<mx:itemEditor>
+							<mx:Component>
+								<mx:ComboBox labelField="label" dataProvider="{statusLabels}" prompt="Set Status">
+									<mx:Script>
+	                                        <![CDATA[
+	                                            [Bindable]
+	                                            private var statusLabels:Array = [{label:"Awaiting", data:0}, {label:"Approved", data:1}];
+	                                        ]]>
+	                                </mx:Script>
+								</mx:ComboBox>
+							</mx:Component>
+						</mx:itemEditor>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Qty:" dataField="qty" editorDataField="value" width="90">
+						<mx:itemEditor>
+	                    	<mx:Component>
+	                        	<mx:NumericStepper minimum="0" maximum="100000"/>
+	                    	</mx:Component>
+	                </mx:itemEditor>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn headerText="Number Of Holes:" dataField="numberofholes" visible="false" />
+					<mx:DataGridColumn headerText="Mold Name:" dataField="moldname" width="120" />
+					<mx:DataGridColumn headerText="Last Updated By:" dataField="userlastupdatedby" />
+					<mx:DataGridColumn headerText="Created By:" dataField="usercreatedby" />
+					<mx:DataGridColumn headerText="Modified Date:" labelFunction="getDateLabel" dataField="lastupdated" width="240"/>
+					<mx:DataGridColumn headerText="Created Date:" labelFunction="getDateLabel" dataField="createddate" />
+					<mx:DataGridColumn headerText="PDF:" width="50" paddingLeft="5" paddingRight="5">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:Image source="@Embed(source='icons/pdf_icon.png')" horizontalAlign="center" click="ReportColorNames();">
+									<mx:Script>
+										<![CDATA[
+											private function ReportColorNames():void {
+												var url:String = "http://paramount.mktalliance.com/DDP/ReportViewer.aspx?ReportName=/DDP/TrayPrintReport&jobid=" + parentApplication.jobPanelData.dataGrid.selectedItem.trayjobid;
+												var request:URLRequest = new URLRequest(url);
+												navigateToURL(request, '_blank');
+											}
+										]]>
+									</mx:Script>
+								</mx:Image>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:DataGridColumn>
+				</mx:columns>
+		</mx:DataGrid>
+			<mx:Button id="btnAddNew" click="goToUpdate()" icon="@Embed('icons/AddRecord.png')" toolTip="Add New Job" x="10" bottom="10"/>
+			<mx:Button id="btnDelete" click="deleteItem()" icon="@Embed('icons/DeleteRecord.png')" toolTip="Delete Job" x="58" bottom="10"/>
+			<mx:Button id="btnEditJob" icon="@Embed('icons/EditJob.png')" toolTip="Edit Job Info" bottom="10" x="105" click="dataGrid.editable = true;"/>
+			<mx:Button id="btnEdit" click="goToEdit()" icon="@Embed('icons/EditMold.png')" toolTip="Edit Job Mold" bottom="10" x="153"/>
+			<mx:Button id="btnDuplicate" icon="@Embed('icons/DupRecord.png')" toolTip="Duplicate Job" bottom="10" x="201" click="goToDup();"/>
+			<mx:Button id="btnActivate" label="Activate" toolTip="Activate Job" bottom="10" x="249" click="showUnActiveJobs();" />
+			<mx:Button id="btnInactivate" label="Deactivate" toolTip="Deactivate Job" bottom="10" x="335" click="inActiveJobs();" visible="false" />
+			<mx:Label text="Search by Job Name" right="300" bottom="11" color="white"/>
+			<mx:TextInput id="filterTxt" width="238" toolTip="Search by Job Name" enter="filterResults()" right="58" bottom="11"/>
+			<mx:Button click="filterResults()" id="filterButton" icon="@Embed('icons/SearchRecord.png')" toolTip="Search by Job Name" right="10" bottom="10"/>		
+	</mx:Canvas>
+	
+	<mx:Canvas id="update" width="100%" height="100%"  hideEffect="WipeUp" showEffect="WipeDown">
+		<mx:VDividedBox width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+		<mx:Canvas width="100%" height="20%" >
+				<mx:HBox>
+					<mx:Text text="New Job" fontWeight="bold" fontSize="16"/>
+					<mx:VBox>
+					<mx:Form>
+			            <mx:FormItem label="Job Name:" id="jobname_form" color="black">
+			                <mx:TextInput id="jobnameCol" color="black"/>
+			            </mx:FormItem>	
+			            <mx:FormItem label="Style Name:" id="stylename_form" color="black">
+			                <mx:TextInput id="stylenameCol" text="" color="black"/>
+			            </mx:FormItem>
+			            <mx:FormItem label="Quantity:" id="qty_form" color="black">
+                			<mx:NumericStepper id="qtyCol" maximum="10000" minimum="1" color="black"/>
+            			</mx:FormItem>
+			            <mx:FormItem visible="false" label="Company:" id="company_form">
+			                <mx:TextInput id="companyCol" text="ap"/>
+			            </mx:FormItem>
+			        </mx:Form>    
+					</mx:VBox>
+					<mx:VBox>
+					<mx:Form>
+			            <mx:FormItem label="Tray Name:" id="traymoldname_form" color="black">
+			                <mx:TextInput id="traymoldnameCol" text="{addnewJobMold.dataGrid.selectedItem.moldname}" color="black" enabled="false"/>
+			                <mx:HBox>
+				            	<mx:Button enabled="false" label="Save" id="btnSubmit" click="insertItem()" right="81" bottom="10" 
+				            		mouseOver="jobnameColVal.validate(jobnameCol.text);
+				            		stylenameColVal.validate(stylenameCol.text);
+				            		traymoldnameColVal.validate(traymoldnameCol.text);" />
+								<mx:Button label="Cancel" id="btnCancel" click="goToView()" right="10" bottom="10"/>
+				            </mx:HBox> 	
+			            </mx:FormItem>
+			            <mx:FormItem label="Status:" id="status_form" visible="false">
+	                		<mx:TextInput id="statusCol" text="0" />
+	            		</mx:FormItem>
+			            <mx:FormItem visible="false" label="Trayid:" id="trayid_form" required="true">
+			                <mx:TextInput id="trayidCol" text="{addnewJobMold.dataGrid.selectedItem.traymoldid}"/>
+			            </mx:FormItem>
+			        </mx:Form>    
+		            </mx:VBox>
+		            <mx:VBox>	
+		            <mx:Form width="1" height="1">
+						<mx:FormItem visible="false" label="Active:" id="active_form">
+	                		<mx:TextInput id="activeCol" text="1"/>
+	            		</mx:FormItem>
+	            		<mx:FormItem label="Created By:" id="createdby_form" required="true" visible="false">
+	                		<mx:TextInput id="createdbyCol" text="{parentApplication.myUserRole.trayuserid}" width="131"/>
+	            		</mx:FormItem>
+	            		<mx:FormItem label="Last Updated:" id="lastupdatedby_form" required="true" visible="false">
+                			<mx:TextInput id="lastupdatedbyCol" text="{parentApplication.myUserRole.trayuserid}" width="129"/>
+            			</mx:FormItem>
+            		</mx:Form>	
+		            </mx:VBox>
+				</mx:HBox>
+		</mx:Canvas>
+		<mx:Canvas width="100%" height="80%">
+			<mkt:moldPanel id="addnewJobMold" width="{update.width}" height="100%" />
+		</mx:Canvas>	
+	</mx:VDividedBox>
+	</mx:Canvas>
+	
+	<mx:Canvas id="edit" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+		<mx:VDividedBox width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+		<mx:Canvas width="100%" height="20%" >
+			<!--<mx:Form width="100%" height="80%" id="editjobForm" defaultButton="{btnSubmit}">-->
+				<mx:HBox>
+					<mx:Text text="Edit Job Mold" fontWeight="bold" fontSize="16"/>
+					<mx:VBox>
+					<mx:Form>
+			            <mx:FormItem label="Job Name:" id="editjobname_form" color="black">
+			                <mx:TextInput id="editjobnameCol" text="{dataGrid.selectedItem.jobname}" color="black"/>
+			            </mx:FormItem>	
+			            <mx:FormItem label="Style Name:" id="editstylename_form" color="black">
+			                <mx:TextInput id="editstylenameCol" text="{dataGrid.selectedItem.stylename}" width="169" color="black"/>
+			            </mx:FormItem>
+			            <mx:FormItem visible="false" label="Company:" id="editcompany_form">
+			                <mx:TextInput id="editcompanyCol" text="{dataGrid.selectedItem.company}"/>
+			            </mx:FormItem>
+			        </mx:Form>    
+					</mx:VBox>
+					<mx:VBox>
+					<mx:Form>
+			            <mx:FormItem label="Quantity:" id="editqty_form" color="black">
+                			<mx:NumericStepper id="editqtyCol" maximum="10000" value="{dataGrid.selectedItem.qty}" color="black" />
+            			</mx:FormItem>
+			            <mx:FormItem label="Tray Name:" id="edittraymoldname_form" color="black">
+			                <mx:TextInput id="edittraymoldnameCol" text="{editJobMold.dataGrid.selectedItem.moldname}" width="159" color="black" enabled="false"/>
+							<mx:HBox>
+				            	<mx:Button enabled="false" label="Save" id="editbtnSubmit" click="updateJob()" right="81" bottom="10" mouseOver="edittraymoldnameColVal.validate(edittraymoldnameCol.text);"/>
+								<mx:Button label="Cancel" id="editbtnCancel" click="goToView()" right="10" bottom="10"/> 
+							</mx:HBox>    
+			            </mx:FormItem>
+			            <mx:FormItem visible="false" label="Trayid:" id="edittrayid_form" required="true">
+			                <mx:TextInput id="edittrayidCol" text="{editJobMold.dataGrid.selectedItem.traymoldid}" width="185"/>
+			            </mx:FormItem>
+			        </mx:Form>    
+		            </mx:VBox>
+		            <mx:VBox>
+		            <mx:Form width="1" height="1">
+		            	<mx:FormItem label="Status:" id="editstatus_form" visible="false">
+	                		<mx:TextInput id="editstatusCol" text="{dataGrid.selectedItem.status}"/>
+	            		</mx:FormItem>
+	            		<mx:FormItem label="Created By:" id="editcreatedby_form" visible="false">
+	                		<mx:TextInput id="editcreatedbyCol" text="{parentApplication.myUserRole.trayuserid}" width="131"/>
+	            		</mx:FormItem>
+	           			<mx:FormItem label="Last Updated By:" id="editlastupdatedby_form" visible="false">
+                			<mx:TextInput id="editlastupdatedbyCol" text="{parentApplication.myUserRole.trayuserid}" width="129"/>
+            			</mx:FormItem>
+            		</mx:Form>		
+		            </mx:VBox>
+		            <mx:VBox>
+						<mx:Form>
+						<mx:FormItem visible="false" label="Active:" id="editactive_form">
+	                		<mx:TextInput id="editactiveCol" text="{dataGrid.selectedItem.active}"/>
+	            		</mx:FormItem>
+	            		</mx:Form>
+		            </mx:VBox>
+				</mx:HBox>
+		</mx:Canvas>
+		<mx:Canvas width="100%" height="80%">
+			<mkt:moldPanel id="editJobMold" width="{edit.width}" height="100%"/>
+		</mx:Canvas>
+	</mx:VDividedBox>
+	</mx:Canvas>
+	
+	<mx:Canvas id="duplicate" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown" >
+		<mx:HBox>
+			<mx:Text text="Duplicate Job" fontWeight="bold" fontSize="16"/>
+			<mx:VBox>				
+				<mx:Form>
+		            <mx:FormItem label="Job Name:" id="dupjobname_form" color="black">
+		                <mx:TextInput id="dupjobnameCol" text="{dataGrid.selectedItem.jobname}" color="black"/>
+		            </mx:FormItem>	
+		            <mx:FormItem label="Style Name:" id="dupstylename_form" color="black">
+		                <mx:TextInput id="dupstylenameCol" text="{dataGrid.selectedItem.stylename}" color="black"/>
+		            </mx:FormItem>
+		            <mx:FormItem label="Quantity:" id="dupqty_form" color="black">
+	        			<mx:NumericStepper id="dupqtyCol" maximum="10000" color="black" value="{dataGrid.selectedItem.qty}" />
+	    			</mx:FormItem>
+		            <mx:FormItem visible="false" label="Company:" id="dupcompany_form">
+		                <mx:TextInput id="dupcompanyCol" text="ap"/>
+		            </mx:FormItem>
+		        </mx:Form>    
+			</mx:VBox>
+			<mx:VBox>
+				<mx:Form>
+		            <mx:FormItem label="Tray Name:" id="duptraymoldname_form" color="black">
+		                <mx:TextInput id="duptraymoldnameCol" text="{dataGrid.selectedItem.moldname}" color="black" enabled="false"/>
+		                <mx:HBox>
+			            	<mx:Button label="Save" id="dupbtnSubmit" click="dupItem()" right="81" bottom="10"/>
+							<mx:Button label="Cancel" id="dupbtnCancel" click="goToView()" right="10" bottom="10"/>
+			            </mx:HBox> 	
+		            </mx:FormItem>
+		            <mx:FormItem label="Status:" id="dupstatus_form" visible="false">
+	            		<mx:TextInput id="dupstatusCol" text="0" />
+	        		</mx:FormItem>
+		            <mx:FormItem visible="false" label="Trayid:" id="duptrayid_form" required="false">
+		                <mx:TextInput id="duptrayidCol" text="{dataGrid.selectedItem.trayid}"/>
+		            </mx:FormItem>
+		        </mx:Form>    
+            </mx:VBox>
+            <mx:VBox>	
+	            <mx:Form width="1" height="1">
+					<mx:FormItem visible="false" label="Active:" id="dupactive_form">
+	            		<mx:TextInput id="dupactiveCol" text="1"/>
+	        		</mx:FormItem>
+	        		<mx:FormItem label="Created By:" id="dupcreatedby_form" required="true" visible="false">
+	            		<mx:TextInput id="dupcreatedbyCol" text="{parentApplication.myUserRole.trayuserid}" width="131"/>
+	        		</mx:FormItem>
+	        		<mx:FormItem label="Last Updated:" id="duplastupdatedby_form" required="true" visible="false">
+	        			<mx:TextInput id="duplastupdatedbyCol" text="{parentApplication.myUserRole.trayuserid}" width="129"/>
+	    			</mx:FormItem>
+	    		</mx:Form>	
+            </mx:VBox>
+		</mx:HBox>
+	</mx:Canvas>
+	</mx:ViewStack>
+</mx:TitleWindow>

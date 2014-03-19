@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	themeColor="#CECECE"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="vertical" 
+	creationComplete="initApp();"
+	width="100%"
+	height="100%" >
+    <mx:Script source="colornameScript.as"/>
+    <mx:WipeUp id="WipeUp" duration="500"/>
+	<mx:WipeDown id="WipeDown" duration="500"/>
+    <mx:ViewStack id="applicationScreens" width="100%" height="100%">
+	    <mx:Canvas id="colorScreen" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+	    	<mx:Canvas id="colorCanvas" width="100%" height="100%">
+				<mx:Tile id="myTile"
+					width="100%"
+					height="100%"
+					paddingTop="2"
+					verticalAlign="middle"
+					horizontalAlign="center"
+					direction="horizontal" >
+					<mx:Repeater id="repeatColors" dataProvider="{colornameArr}">
+						<mx:TextArea id="colorName" text="{String(repeatColors.currentItem.colorname)}"
+							focusIn="myTile.verticalScrollPosition = (event.currentTarget.getRepeaterItem().sequencenumber - 1) * 81"
+							wordWrap="false"
+							fontSize="13"
+							toolTip="Job Name: {parentApplication.jobPanelData.dataGrid.selectedItem.jobname} &#13;Mold Name: {moldnameArr.getItemAt(0).moldname} &#13;Sequence Number: {repeatColors.currentItem.sequencenumber}"
+							fontWeight="bold"
+							textAlign="center"
+				        	paddingTop="36"
+							width="{myTile.width - 21}"
+							height="75" themeColor="#CECECE"/>
+					</mx:Repeater>	
+				</mx:Tile>
+			</mx:Canvas>
+			<mx:HBox bottom="1">
+				<mx:Button id="saveColors" label="Save" bottom="10" left="6" click="SaveColorNames();"/>
+				<mx:Button id="copyColors" label="Copy Swatches" bottom="10" left="6" click="CopyColorNames();"/>
+				<mx:Button id="reportColors" icon="@Embed(source='icons/pdf_icon.png')" bottom="10" left="6" click="ReportColorNames();"/>
+				<mx:Button id="importBCM" label="Import BCM Job" bottom="10" left="6" click="showBCMJobs();"/>
+			</mx:HBox>
+	    </mx:Canvas>
+		<mx:Canvas id="bcmScreen" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+			<mx:Canvas id="view" width="100%" height="100%" hideEffect="WipeUp" showEffect="WipeDown">
+				<mx:DataGrid id="dataGrid"
+					editable="false"
+					itemClick="enableImport();"
+					dataProvider="{dataArr}"
+					rowCount="8"
+					resizableColumns="true" 
+					right="10" left="10" top=
+					"10" bottom="71" rollOverColor="#EBEBEB" selectionColor="#CECECE">
+						<mx:columns>
+							<mx:DataGridColumn headerText="Job Name:" dataField="jobname"/>
+							<mx:DataGridColumn headerText="Customer Name:" dataField="customer"/>
+							<mx:DataGridColumn headerText="Style Number:" dataField="stylenumber" />
+							<mx:DataGridColumn headerText="Style Name:" dataField="stylename"/>
+							<mx:DataGridColumn headerText="Logo:" dataField="logo" />
+							<mx:DataGridColumn headerText="Mold Name:" dataField="mold" />
+							<mx:DataGridColumn headerText="Quanity:" dataField="qty" />
+							<mx:DataGridColumn headerText="Order Date" dataField="orderdate"/>
+						</mx:columns>
+				</mx:DataGrid>
+					<mx:Button id="btnImportColors" left="10" bottom="10" label="Import Colors" click="importColors();" enabled="false"/>
+					<mx:Button label="Cancel" id="btnCancel" click="showColorNames();" left="120" bottom="10"/>
+					<mx:TextInput id="filterTxt" width="238" toolTip="Search by Job Name" enter="filterResults();" right="58" bottom="11"/>
+					<mx:Button click="filterResults();" id="filterButton" icon="@Embed('icons/SearchRecord.png')" toolTip="Search by Job Name" right="10" bottom="10" />		
+			</mx:Canvas>
+		</mx:Canvas>
+	</mx:ViewStack>
+</mx:TitleWindow>

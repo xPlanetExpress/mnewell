@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:mate="http://mate.asfusion.com/"
+			   xmlns:views="com.mktalliance.views.*"
+			   xmlns:maps="com.mktalliance.maps.*">
+	
+	<!--<fx:Script source="main.as"/>-->
+	
+	<fx:Style source="MagPrint.css"/>
+	
+	<fx:Declarations>		
+		<!-- Event Maps __________________________________________________ -->
+		<maps:MainEventMap/>
+		<maps:ModelMap/>
+
+		<!-- Debugger   __________________________________________________ -->
+		<mate:Debugger level="{Debugger.ALL}"/>
+	</fx:Declarations>
+	
+	<!-- GUI ______________________________________________________________________ -->
+	<!--<mx:Image width="{this.width}" height="{this.height}" scaleContent="false" source="@Embed(source='assets/backgrounds/background.jpg')" />-->
+	<mx:Image width="250" bottom="10" right="10" source="assets/logo.png" smoothBitmapContent="true"  height="142"/>
+	<views:MainUI id="mainView" x="{(this.width - mainView.width) / 2}" width="95%" height="96%"/>
+	
+</s:Application>

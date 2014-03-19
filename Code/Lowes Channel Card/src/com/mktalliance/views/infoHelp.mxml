@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="How to fill out job information"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   width="{FlexGlobals.topLevelApplication.width * .8}" 
+			   height="{FlexGlobals.topLevelApplication.height * .8}"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   creationCompleteEffect="{fadeIn}"
+			   creationComplete="init()"
+			   close="handleCloseEvent()"  >
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals; 
+			import mx.core.IFlexDisplayObject;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			
+			public var alertTimer:Timer = new Timer(10000, 1);
+			
+			private function init():void {
+				//alertTimer.start();
+				alertTimer.addEventListener(TimerEvent.TIMER_COMPLETE, alertTimerComplete);
+			}
+			
+			private function alertTimerComplete(event:TimerEvent):void{
+				PopUpManager.removePopUp(this);
+			}
+			
+			// Handle the close button and Cancel button.
+			private function handleCloseEvent():void {
+				alertTimer.stop();
+				PopUpManager.removePopUp(this);
+			}            
+		]]>
+	</fx:Script>
+	
+	<fx:Style source="MagPrint.css"/>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:Fade alphaFrom="0.0" alphaTo="1.0" id="fadeIn" duration="500"/>
+		<mx:DateFormatter id="myDate" formatString="MM / DD / YYYY"/>
+	</fx:Declarations>
+
+	<s:controlBarContent>
+		<mx:Spacer width="100%"/>
+		<s:Button label="CLOSE" color="#000000" click="handleCloseEvent()"/>
+	</s:controlBarContent>
+
+	<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:mx="library://ns.adobe.com/flex/mx" >
+	<mx:Canvas width="{this.width}" height="{this.height}">
+			<mx:Text top="20" horizontalCenter="0" width="{this.width * .85}" height="{this.height * .6}" fontSize="16">
+				<mx:htmlText>
+					<![CDATA[<p><b>Job Information. </b>If you hover the mouse over items a tooltip will appear to explain what each button does. NOTE: All items in red are required and must be filled out to proceed.</p>
+<p><b>PRODUCT NAME</b> - Name of the product (e.g. Boutique®)</p>
+<p><b>PRODUCT NUMBER</b> - Number that prints under the product name (e.g. 1234).</p>
+<p><b>REORDER NUMBER</b> - YOU MUST HAVE THE REODER NUMBER TO PROCEED. IF YOU DON'T HAVE A REORDER NUMBER DOWNLOAD THE FORM AND EMAIL KURI.MANSA@LOWES.COM</p>
+<p><b>VENDOR CONTACT</b> - First Name Last Name.</p>
+<p><b>VENDOR EMAIL</b> - Email address to recieve the proof.</p>
+<p><b>VENDOR TELEPHONE</b> - Contact number incase we need to contact you.</p>
+<p><b>INSTORE DATE</b> - Estimated instore date of product.</p>
+<p><b># OF STORES PRINTED</b> - Number of stores to be printed for.</p>
+<p><b># OF PRINTED FOR ARCHWAY</b> - Number to be printed for Archway.</p>
+<p><b>ADDITIONAL INFORMATION</b> - Additional notes for the job.</p>
+					
+			<p><b>NOTE: These are just instructions for the site. When finished click the CLOSE button.</b></p>
+					]]>
+				</mx:htmlText>
+			</mx:Text>
+		
+	</mx:Canvas>
+	
+	</s:Group>
+</s:TitleWindow>

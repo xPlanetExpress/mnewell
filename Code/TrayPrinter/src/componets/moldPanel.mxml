@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  
+	themeColor="#CECECE"
+	width="100%"
+	height="100%"
+	creationComplete="initApp()" >
+    <mx:Script source="moldScript.as" />
+	<mx:ViewStack id="applicationScreens" width="100%" height="100%">
+		<mx:Canvas id="view" width="100%" height="100%">
+		<mx:DataGrid id="dataGrid"
+			dataProvider="{dataArr}"
+			rollOverColor="#EBEBEB" selectionColor="#CECECE"
+			rowCount="8"
+			resizableColumns="true" 
+			headerRelease="setOrder(event);"
+			right="10" left="10" top="10" bottom="71">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Name:" dataField="moldname" />
+					<mx:DataGridColumn headerText="Width:" dataField="moldwidth" />
+					<mx:DataGridColumn headerText="Height:" dataField="moldheight" />
+					<mx:DataGridColumn headerText="Across:" dataField="moldacross" />
+					<mx:DataGridColumn headerText="Down:" dataField="molddown" />
+					<mx:DataGridColumn headerText="G Width:" dataField="gwidth" />
+					<mx:DataGridColumn headerText="S Depth:" dataField="gdepth" />
+					<mx:DataGridColumn headerText="Number Of:" dataField="numberofholes" />
+					<mx:DataGridColumn headerText="S Width:" dataField="swatchwidth" />
+					<mx:DataGridColumn headerText="S Height:" dataField="swatchheight" />
+					<mx:DataGridColumn headerText="Created By:" dataField="usercreated"/>
+					<mx:DataGridColumn headerText="Created By:" visible="false" dataField="createdby" />
+				</mx:columns>
+		</mx:DataGrid>
+		<mx:Button id="btnAddNew" visible="false" click="parentApplication.addMoldBar.visible = true;parentApplication.addMoldBar.height = 150;" icon="@Embed('icons/AddMold.png')" toolTip="Add New Mold" x="10" bottom="10"/>
+		<mx:Button id="btnDelete" visible="false" click="deleteItem()" icon="@Embed('icons/DeleteRecord.png')" toolTip="Delete Mold" x="58" bottom="10"/>
+		<mx:Label text="Search by Mold Name" right="300" bottom="11"/>
+		<mx:TextInput id="filterTxt" width="238" toolTip="Search by Mold Name" enter="filterResults()" right="58" bottom="11"/>
+		<mx:Button click="filterResults()" id="filterButton" icon="@Embed('icons/SearchRecord.png')" toolTip="Search by Mold Name" right="10" bottom="10"/>
+	</mx:Canvas>
+	</mx:ViewStack>
+</mx:Canvas>
